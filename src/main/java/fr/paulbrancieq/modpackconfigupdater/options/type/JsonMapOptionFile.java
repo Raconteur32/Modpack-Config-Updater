@@ -51,6 +51,6 @@ public class JsonMapOptionFile extends MapOption {
 
   @Override
   public JsonMapOptionFile deepCopy(CollectionOption<?> parent) {
-    return new JsonMapOptionFile(optionPath, backup, value, parent);
+    return new JsonMapOptionFile(optionPath, getBackup().orElse(null), value, parent);
   }
 }

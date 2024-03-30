@@ -5,6 +5,8 @@ import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
 
+import java.util.Optional;
+
 public class StringOption extends Option<String> {
   String value;
   public StringOption(OptionPath optionPath, Backup backup, String value, CollectionOption<?> parent) {
@@ -28,6 +30,6 @@ public class StringOption extends Option<String> {
 
   @Override
   public StringOption deepCopy(CollectionOption<?> parent) {
-    return new StringOption(optionPath, backup, value, parent);
+    return new StringOption(optionPath, getBackup().orElse(null), value, parent);
   }
 }

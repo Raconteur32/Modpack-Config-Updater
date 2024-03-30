@@ -45,6 +45,6 @@ public class JsonListOptionFile extends ListOption {
 
   @Override
   public JsonListOptionFile deepCopy(CollectionOption<?> parent) {
-    return new JsonListOptionFile(optionPath, backup, value, parent);
+    return new JsonListOptionFile(optionPath, getBackup().orElse(null), value, parent);
   }
 }

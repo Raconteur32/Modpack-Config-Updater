@@ -27,6 +27,6 @@ public class BooleanOption extends Option<Boolean> {
 
   @Override
   public BooleanOption deepCopy(CollectionOption<?> parent) {
-    return new BooleanOption(optionPath, backup, value, parent);
+    return new BooleanOption(optionPath, getBackup().orElse(null), value, parent);
   }
 }

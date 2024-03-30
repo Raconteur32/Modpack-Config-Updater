@@ -28,6 +28,6 @@ public class NumberOption<T extends Number> extends Option<T> {
 
   @Override
   public NumberOption<T> deepCopy(CollectionOption<?> parent) {
-    return new NumberOption<>(optionPath, backup, value, parent);
+    return new NumberOption<>(optionPath, getBackup().orElse(null), value, parent);
   }
 }

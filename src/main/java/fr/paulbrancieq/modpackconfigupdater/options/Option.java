@@ -13,7 +13,7 @@ import java.util.Optional;
 public abstract class Option<T> {
   protected final OptionPath optionPath;
   protected final String optionName;
-  protected final Backup backup;
+  private final Backup backup;
   protected CollectionOption<?> parent;
 
   protected T value;
@@ -59,13 +59,16 @@ public abstract class Option<T> {
     return Optional.ofNullable(parent);
   }
 
+  public Optional<Backup> getBackup() {
+    return Optional.ofNullable(backup);
+  }
+
   public OptionPath getOptionPath() {
     return optionPath;
   }
 
   public abstract T getValue();
 
-  @MustBeInvokedByOverriders
   public abstract void merge(Option<?> option) throws OptionException.CantMergeOption;
 
   @MustBeInvokedByOverriders

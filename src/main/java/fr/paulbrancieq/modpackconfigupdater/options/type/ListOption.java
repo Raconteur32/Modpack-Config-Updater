@@ -61,6 +61,6 @@ public class ListOption extends CollectionOption<List<Option<?>>> {
 
   @Override
   public ListOption deepCopy(CollectionOption<?> parent) {
-    return new ListOption(optionPath, backup, value, parent);
+    return new ListOption(optionPath, getBackup().orElse(null), value, parent);
   }
 }

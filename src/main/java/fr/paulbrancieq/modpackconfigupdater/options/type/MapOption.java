@@ -69,6 +69,6 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
 
   @Override
   public MapOption deepCopy(CollectionOption<?> parent) {
-    return new MapOption(optionPath, backup, value, parent);
+    return new MapOption(optionPath, getBackup().orElse(null), value, parent);
   }
 }
