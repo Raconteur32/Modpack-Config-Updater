@@ -1,9 +1,9 @@
 {
 	"required": true,
-	"package": "com.paulbrancieq.modpackconfigupdater.mixin",
+	"package": "fr.paulbrancieq.modpackconfigupdater.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-      "fr.paulbrancieq.modpackconfigupdater.mixin.ExampleMixin"
+      "ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

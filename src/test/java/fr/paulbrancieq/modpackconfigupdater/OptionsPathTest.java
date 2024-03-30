@@ -18,18 +18,7 @@ public class OptionsPathTest {
     assertEquals(4, optionPath.getInFileOptionPathParts().size());
     List<String> expected = List.of("map", "map2", "list", "1");
     for (int i = 0; i < optionPath.getInFileOptionPathParts().size(); i++) {
-      assertEquals(expected.get(i), optionPath.getInFileOptionPathParts().get(i).getPartName());
-      assertFalse(optionPath.getInFileOptionPathParts().get(i).haveFilters());
+      assertEquals(expected.get(i), optionPath.getInFileOptionPathParts().get(i).getBaseString());
     }
-  }
-
-  @Test
-  public void optionPathWithOneFilter() {
-    OptionPath optionPath = new OptionPath("test/test.json:map[42]");
-    assertEquals("test" + separator + "test.json", optionPath.getFilePath());
-    assertEquals(1, optionPath.getInFileOptionPathParts().size());
-    assertEquals("map", optionPath.getInFileOptionPathParts().get(0).getPartName());
-    assertTrue(optionPath.getInFileOptionPathParts().get(0).haveFilters());
-    assertEquals(1, optionPath.getInFileOptionPathParts().get(0).getFilters().size());
   }
 }

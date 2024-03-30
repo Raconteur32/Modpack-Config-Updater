@@ -1,9 +1,11 @@
 package fr.paulbrancieq.modpackconfigupdater.path;
 
+import fr.paulbrancieq.modpackconfigupdater.ModpackConfigurationUpdater;
+import fr.paulbrancieq.modpackconfigupdater.exceptions.FilterException;
+import fr.paulbrancieq.modpackconfigupdater.path.filter.Filter;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.nio.file.Path;
 
 /**
@@ -15,21 +17,31 @@ import java.nio.file.Path;
  * The separator for file paths is the backward or forward slash ('/' or '\').
  * The separator for option paths is the dot ('.').
  * Each dot in the option path represents a level of nesting in the option (object and sub-objects).
- * To aim at a specific element in a list, the index of the element is written in square brackets ('[]').
  */
 public class OptionPath {
   protected String filePathString;
   protected String inFileOptionPathString;
   protected List<InFileOptionPathPart> inFileOptionPathParts = new ArrayList<>();
+  protected final String fullPath;
 
   /**
    * Construct an OptionPath object with a string representing the path to the option.
    */
   public OptionPath(String path) {
+    fullPath = path;
     sliceTwoParts(path);
     correctFilePath();
     verifyFilePath();
     splitOptionPath();
+  }
+
+  /**
+   * Get the full path.
+   *
+   * @return The full path.
+   */
+  public String getFullPath() {
+    return fullPath;
   }
 
   /**
@@ -118,79 +130,53 @@ public class OptionPath {
   }
 
   /**
+   * Get a sub path from the option path.
+   *
+   * @param keyOrIndex The key or index of the sub path.
+   */
+  public OptionPath getSubPath(Object keyOrIndex) {
+    // keyOrIndex should be a string or a number or a boolean
+    if (!(keyOrIndex instanceof String) && !(keyOrIndex instanceof Number) && !(keyOrIndex instanceof Boolean)) {
+      throw new IllegalArgumentException("The key or index must be a string, a number, or a boolean.");
+    }
+    if (!fullPath.endsWith(":")) {
+      return new OptionPath(fullPath + "." + keyOrIndex);
+    } else {
+      return new OptionPath(fullPath + keyOrIndex);
+    }
+  }
+
+  /**
    * Option path part. Represent a part of inFileOptionPathString (between two dots).
-   * Contain a partName, and optionally an index if the part is an element of a list.
-   * Example: "partName" or "partName[0]".
+   * Can be a string as a key in a map, or an index in a list. Can also be a filter.
    */
   public static class InFileOptionPathPart {
-    protected String baseString;
-    protected String partName;
-    protected String filterPart;
-    protected List<String> filters = new ArrayList<>();
-    protected boolean haveIndex = false;
+    protected final String baseString;
+    protected boolean isFilter = false;
+    protected Filter filter;
 
     /**
      * Construct an OptionPathPart object with a string representing a part of the option path.
      */
     public InFileOptionPathPart(String part) {
       baseString = part;
-      verifyBaseString();
-      slicePart(part);
-    }
-
-    /**
-     * Verify base string. Example: "partName" or "partName[0]". Should match
-     * the regex "^(?<namepart>([^\[\]]|(?<=\\)[\[\]])*)(?<indexpart>\[[1-9]+])?$".
-     */
-    private void verifyBaseString() {
-      if (!Pattern.matches("^(?<namepart>(?:[^\\[\\]]|(?<=\\\\)[\\[\\]])*)(?<filterpart>\\[.+])?$", baseString)) { // TODO handle multiple indexes for sub lists
-          throw new IllegalArgumentException("The part must be a valid part name with an optional index.");
-      }
-    }
-
-    /**
-     * Slice the inputted string into 2 parts: the part name and the index. Ignore the '[' and ']'
-     * if they're escaped by a backslash. Should use the regex "^(?<namepart>([^\[\]]|(?<=\\)[\[\]])*)(?<indexpart>\[[1-9]+])?$".
-     *
-     * @param part The part of the option path.
-     */
-    private void slicePart(String part) {
-      Pattern pattern = Pattern.compile("^(?<namepart>(?:[^\\[\\]]|(?<=\\\\)[\\[\\]])*)(?<filterpart>\\[.+])?$"); // TODO handle multiple indexes for sub lists
-      Matcher matcher = pattern.matcher(part);
-      if (matcher.find()) {
-        partName = matcher.group("namepart");
-        filterPart = matcher.group("filterpart");
-      }
-      // unescape partName (remove all non-escaped backslashes)
-      partName = partName.replaceAll("\\\\([^\\\\])", "$1");
-      // slice filter part
-      if (filterPart != null) {
-        // filter part example: "[test][42][lol][toto]". Split it
-        String[] filters = filterPart.substring(1, filterPart.length() - 1).split("(?<!\\\\)\\[");
-        for (String filter : filters) {
-          // unescape filter (remove all non-escaped backslashes)
-          filter = filter.replaceAll("\\\\([^\\\\])", "$1");
-          this.filters.add(filter);
+      try {
+        if (baseString.matches("^\\[.*]$")) {
+          filter = new Filter(part);
+          isFilter = true;
         }
+      } catch (FilterException e) {
+        ModpackConfigurationUpdater.LOGGER.warn("Option path part could be a filter but is not correctly formatted: " + part);
       }
     }
 
     /**
-     * Get the part name.
+     * Get the base string.
      *
-     * @return The part name.
+     * @return The base string.
      */
-    public String getPartName() {
-      return partName;
-    }
-
-    /**
-     * Get the filters.
-     *
-     * @return The filters.
-     */
-    public List<String> getFilters() {
-      return filters;
+    public String getBaseString() {
+      return baseString;
     }
   }
 }
