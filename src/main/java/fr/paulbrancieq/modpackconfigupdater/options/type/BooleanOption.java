@@ -4,6 +4,7 @@ import fr.paulbrancieq.modpackconfigupdater.Backup;
 import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public class BooleanOption extends Option<Boolean> {
   public BooleanOption(OptionPath optionPath, Backup backup, Boolean value, CollectionOption<?> parent) {
@@ -16,13 +17,14 @@ public class BooleanOption extends Option<Boolean> {
   }
 
   @Override
-  public Boolean getValue() {
-    return value;
+  public void merge(Option<?> option) throws OptionException.CantMergeOption {
+    throw new OptionException.CantMergeOption(this, option, "BooleanOptions cannot be merged");
   }
 
   @Override
-  public void merge(Option<?> option) throws OptionException.CantMergeOption {
-    throw new OptionException.CantMergeOption(this, option, "BooleanOptions cannot be merged");
+  @MustBeInvokedByOverriders
+  public Boolean isSameAs(Option<?> option) {
+    return super.isSameAs(option) && value.equals(((BooleanOption) option).value);
   }
 
   @Override

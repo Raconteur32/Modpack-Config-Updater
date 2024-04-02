@@ -4,11 +4,9 @@ import fr.paulbrancieq.modpackconfigupdater.Backup;
 import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
-
-import java.util.Optional;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public class StringOption extends Option<String> {
-  String value;
   public StringOption(OptionPath optionPath, Backup backup, String value, CollectionOption<?> parent) {
     super(optionPath, backup, value, parent);
   }
@@ -19,13 +17,14 @@ public class StringOption extends Option<String> {
   }
 
   @Override
-  public String getValue() {
-    return value;
+  public void merge(Option<?> option) throws OptionException.CantMergeOption {
+    throw new OptionException.CantMergeOption(this, option, "StringOptions cannot be merged");
   }
 
   @Override
-  public void merge(Option<?> option) throws OptionException.CantMergeOption {
-    throw new OptionException.CantMergeOption(this, option, "StringOptions cannot be merged");
+  @MustBeInvokedByOverriders
+  public Boolean isSameAs(Option<?> option) {
+    return super.isSameAs(option) && value.equals(((StringOption) option).value);
   }
 
   @Override

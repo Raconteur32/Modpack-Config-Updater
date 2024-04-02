@@ -97,6 +97,9 @@ public class OptionPath {
    */
   private void splitOptionPath() {
     String[] parts = inFileOptionPathString.split("(?<!\\\\)\\.");
+    if (parts.length == 1 && parts[0].isEmpty()) {
+      return;
+    }
     for (String part : parts) {
       inFileOptionPathParts.add(new InFileOptionPathPart(part));
     }

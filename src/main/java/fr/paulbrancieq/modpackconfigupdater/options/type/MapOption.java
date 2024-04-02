@@ -4,28 +4,29 @@ import fr.paulbrancieq.modpackconfigupdater.Backup;
 import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
-  public MapOption(OptionPath optionPath, Backup backup, Map<Object, Option<?>> value, CollectionOption<?> parent) {
+  public MapOption(OptionPath optionPath, Backup backup, Map<?, Option<?>> value, CollectionOption<?> parent) {
     super(optionPath, backup, new HashMap<>(value), parent);
     Map<Object, Option<?>> newValue = new HashMap<>();
-    for (Map.Entry<Object, Option<?>> entry : value.entrySet()) {
+    for (Map.Entry<?, Option<?>> entry : value.entrySet()) {
       newValue.put(entry.getKey(), entry.getValue().deepCopy(this));
     }
     this.value = newValue;
   }
 
-  public static MapOption fromSerializableMap(OptionPath optionPath, Backup backup, Map<Object, Object> map, CollectionOption<?> parent) {
+  public static MapOption fromSerializableMap(OptionPath optionPath, Backup backup, Map<String, Object> map, CollectionOption<?> parent) {
     return new MapOption(optionPath, backup, serializableMapToOptionMap(optionPath, backup, map), parent);
   }
 
-  protected static Map<Object, Option<?>> serializableMapToOptionMap(OptionPath optionPath, Backup backup, Map<Object, Object> map) {
-    Map<Object, Option<?>> value = new HashMap<>();
-    for (Map.Entry<Object, Object> entry : map.entrySet()) {
+  protected static Map<String, Option<?>> serializableMapToOptionMap(OptionPath optionPath, Backup backup, Map<String, Object> map) {
+    Map<String, Option<?>> value = new HashMap<>();
+    for (Map.Entry<String, Object> entry : map.entrySet()) {
       value.put(entry.getKey(), Option.fromSerializableValue(optionPath.getSubPath(entry.getKey()), backup, entry.getValue(), null));
     }
     return value;
@@ -53,11 +54,6 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
   }
 
   @Override
-  public Map<Object, Option<?>> getValue() {
-    return null;
-  }
-
-  @Override
   public void merge(Option<?> option) throws OptionException.CantMergeOption {
     if (!(option instanceof MapOption mapOption)) {
       throw new OptionException.CantMergeOption(this, option, "Can't merge a MapOption with a non-MapOption");
@@ -65,6 +61,24 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
     for (Map.Entry<?, Option<?>> entry : mapOption.getValue().entrySet()) {
       value.put(entry.getKey(), entry.getValue().deepCopy(this));
     }
+  }
+
+  @Override
+  @MustBeInvokedByOverriders
+  public Boolean isSameAs(Option<?> option) {
+    if (!super.isSameAs(option)) {
+      return false;
+    }
+    Map<Object, Option<?>> otherValue = ((MapOption) option).getValue();
+    if (value.size() != otherValue.size()) {
+      return false;
+    }
+    for (Map.Entry<Object, Option<?>> entry : value.entrySet()) {
+      if (!otherValue.containsKey(entry.getKey()) || !entry.getValue().isSameAs(otherValue.get(entry.getKey()))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

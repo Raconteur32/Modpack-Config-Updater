@@ -24,6 +24,12 @@ public class OptionException extends Exception {
     }
   }
 
+  public static class CantSaveOption extends OptionException {
+    public CantSaveOption(Option<?> option, String message) {
+      super("Can't save option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + "): " + message);
+    }
+  }
+
   public static class FileException extends OptionException {
     public FileException(String message) {
       super(message);
@@ -50,6 +56,16 @@ public class OptionException extends Exception {
 
       public CantWriteFile(String path, Throwable cause) {
         super("Can't write file at path " + path, cause);
+      }
+    }
+
+    public static class CantDeleteFile extends FileException {
+      public CantDeleteFile(String path) {
+        super("Can't delete file at path " + path);
+      }
+
+      public CantDeleteFile(String path, Throwable cause) {
+        super("Can't delete file at path " + path, cause);
       }
     }
   }

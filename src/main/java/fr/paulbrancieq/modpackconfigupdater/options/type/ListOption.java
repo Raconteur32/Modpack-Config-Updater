@@ -4,6 +4,7 @@ import fr.paulbrancieq.modpackconfigupdater.Backup;
 import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +51,26 @@ public class ListOption extends CollectionOption<List<Option<?>>> {
   }
 
   @Override
-  public List<Option<?>> getValue() {
-    return value;
+  public void merge(Option<?> option) throws OptionException.CantMergeOption {
+    throw new OptionException.CantMergeOption(this, option, "ListOptions cannot be merged");
   }
 
   @Override
-  public void merge(Option<?> option) throws OptionException.CantMergeOption {
-    throw new OptionException.CantMergeOption(this, option, "ListOptions cannot be merged");
+  @MustBeInvokedByOverriders
+  public Boolean isSameAs(Option<?> option) {
+    if (!super.isSameAs(option)) {
+      return false;
+    }
+    List<Option<?>> otherValue = ((ListOption) option).value;
+    if (value.size() != otherValue.size()) {
+      return false;
+    }
+    for (int i = 0; i < value.size(); i++) {
+      if (!value.get(i).isSameAs(otherValue.get(i))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

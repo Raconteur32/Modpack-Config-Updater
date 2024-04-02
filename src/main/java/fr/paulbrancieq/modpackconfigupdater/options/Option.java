@@ -32,22 +32,34 @@ public abstract class Option<T> {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   public static Option<?> fromSerializableValue(OptionPath optionPath, Backup backup, Object value, CollectionOption<?> parent) {
-    return switch (value.getClass().getSimpleName()) {
-      case "Boolean" -> new BooleanOption(optionPath, backup, (Boolean) value, parent);
-      case "Integer" -> new NumberOption<>(optionPath, backup, (Integer) value, parent);
-      case "Double" -> new NumberOption<>(optionPath, backup, (Double) value, parent);
-      case "Float" -> new NumberOption<>(optionPath, backup, (Float) value, parent);
-      case "Long" -> new NumberOption<>(optionPath, backup, (Long) value, parent);
-      case "Short" -> new NumberOption<>(optionPath, backup, (Short) value, parent);
-      case "Byte" -> new NumberOption<>(optionPath, backup, (Byte) value, parent);
-      case "String" -> new StringOption(optionPath, backup, (String) value, parent);
-      case "List" -> ListOption.fromSerializableList(optionPath, backup, (List) value, parent);
-      case "Map" -> MapOption.fromSerializableMap(optionPath, backup, (Map) value, parent);
-      default -> throw new IllegalArgumentException("Unsupported type: " + value.getClass().getSimpleName());
-    };
+    if (value instanceof Boolean) {
+      return new BooleanOption(optionPath, backup, (Boolean) value, parent);
+    } else if (value instanceof Integer) {
+      return new IntegerOption(optionPath, backup, (Integer) value, parent);
+    } else if (value instanceof Double) {
+      return new DoubleOption(optionPath, backup, (Double) value, parent);
+    } else if (value instanceof Float) {
+      return new FloatOption(optionPath, backup, (Float) value, parent);
+    } else if (value instanceof Long) {
+      return new LongOption(optionPath, backup, (Long) value, parent);
+    } else if (value instanceof Short) {
+      return new ShortOption(optionPath, backup, (Short) value, parent);
+    } else if (value instanceof Byte) {
+      return new ByteOption(optionPath, backup, (Byte) value, parent);
+    } else if (value instanceof String) {
+      return new StringOption(optionPath, backup, (String) value, parent);
+    } else if (value instanceof List) {
+      return ListOption.fromSerializableList(optionPath, backup, (List) value, parent);
+    } else if (value instanceof Map) {
+      return MapOption.fromSerializableMap(optionPath, backup, (Map) value, parent);
+    } else if (value == null) {
+      return new NullOption(optionPath, backup, parent);
+    } else {
+      throw new IllegalArgumentException("Unsupported type: " + value.getClass().getSimpleName());
+    }
   }
 
-  public void save() throws OptionException.FileException.CantWriteFile {
+  public void save() throws OptionException.FileException.CantWriteFile, OptionException.FileException.CantDeleteFile, OptionException.CantSaveOption {
     if (getParent().isPresent()) {
       getParent().get().save();
     }
@@ -67,7 +79,9 @@ public abstract class Option<T> {
     return optionPath;
   }
 
-  public abstract T getValue();
+  public T getValue() {
+    return value;
+  }
 
   public abstract void merge(Option<?> option) throws OptionException.CantMergeOption;
 
@@ -81,8 +95,16 @@ public abstract class Option<T> {
     getParent().ifPresent(parent -> parent.overrideChild(this, newOption));
   }
 
-  void backup() {
+  protected void backup() throws OptionException.CantSaveOption {
+    if (getBackup().isEmpty()) {
+      throw new OptionException.CantSaveOption(this, "No backup provided");
+    }
     backup.add(optionPath);
+  }
+
+  @MustBeInvokedByOverriders
+  public Boolean isSameAs(Option<?> option) {
+    return option.getClass().equals(this.getClass());
   }
 
   public abstract Option<T> deepCopy(CollectionOption<?> parent);
