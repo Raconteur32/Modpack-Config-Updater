@@ -181,5 +181,23 @@ public class OptionPath {
     public String getBaseString() {
       return baseString;
     }
+
+    /**
+     * Return whether the part is a filter.
+     *
+     * @return Whether the part is a filter.
+     */
+    public boolean isFilter() {
+      return isFilter;
+    }
+
+    /**
+     * Get the filter.
+     *
+     * @return The filter.
+     */
+    public Filter getFilter() {
+      return filter;
+    }
   }
 }

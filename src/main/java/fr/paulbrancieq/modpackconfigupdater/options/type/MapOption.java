@@ -6,9 +6,7 @@ import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
   public MapOption(OptionPath optionPath, Backup backup, Map<?, Option<?>> value, CollectionOption<?> parent) {
@@ -39,6 +37,33 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
       map.put(entry.getKey(), entry.getValue().serializableValue());
     }
     return map;
+  }
+
+  @SuppressWarnings("Duplicates")
+  @Override
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+    if (parts.isEmpty()) {
+      return List.of(this);
+    }
+    List<Option<?>> directSubOptions;
+    List<Option<?>> subOptions = new ArrayList<>();
+    OptionPath.InFileOptionPathPart part = parts.get(0);
+    List<OptionPath.InFileOptionPathPart> subParts = parts.subList(1, parts.size());
+    if (part.isFilter()) {
+      directSubOptions = part.getFilter().filter(this);
+    } else if (!value.containsKey(part.getBaseString())) {
+      throw new OptionException.CantFindSpecifiedChild(this, part.getBaseString());
+    } else {
+      directSubOptions = List.of(value.get(part.getBaseString()));
+    }
+    for (Option<?> directSubOption : directSubOptions) {
+      if (directSubOption instanceof CollectionOption<?> collectionOption) {
+        subOptions.addAll(collectionOption.getSubOptions(subParts));
+      } else if (subParts.isEmpty()) {
+        subOptions.add(directSubOption);
+      }
+    }
+    return subOptions;
   }
 
   @Override

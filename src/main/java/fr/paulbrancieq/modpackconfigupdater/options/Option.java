@@ -83,6 +83,14 @@ public abstract class Option<T> {
     return value;
   }
 
+  public final List<Option<?>> getSubOptions(OptionPath optionPath) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+    return getSubOptions(optionPath.getInFileOptionPathParts());
+  }
+
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+    throw new OptionException.OptionDoesNotHaveChildren(this);
+  }
+
   public abstract void merge(Option<?> option) throws OptionException.CantMergeOption;
 
   @MustBeInvokedByOverriders

@@ -30,6 +30,22 @@ public class OptionException extends Exception {
     }
   }
 
+  public static class OptionDoesNotHaveChildren extends OptionException {
+    public OptionDoesNotHaveChildren(Option<?> option) {
+      super("Option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ") does not have children");
+    }
+  }
+
+  public static class CantFindSpecifiedChild extends OptionException {
+    public CantFindSpecifiedChild(Option<?> option, String childId) {
+      super("Can't find specified child " + childId + " in option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ")");
+    }
+
+    public CantFindSpecifiedChild(Option<?> option, String childId, Throwable cause) {
+      super("Can't find specified child " + childId + " in option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ")", cause);
+    }
+  }
+
   public static class FileException extends OptionException {
     public FileException(String message) {
       super(message);

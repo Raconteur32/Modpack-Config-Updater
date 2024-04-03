@@ -40,6 +40,36 @@ public class ListOption extends CollectionOption<List<Option<?>>> {
     return list;
   }
 
+  @SuppressWarnings("Duplicates")
+  @Override
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+    if (parts.isEmpty()) {
+      return List.of(this);
+    }
+    List<Option<?>> directSubOptions;
+    List<Option<?>> subOptions = new ArrayList<>();
+    OptionPath.InFileOptionPathPart part = parts.get(0);
+    List<OptionPath.InFileOptionPathPart> subParts = parts.subList(1, parts.size());
+    if (part.isFilter()) {
+      directSubOptions = part.getFilter().filter(this);
+    } else {
+      try {
+        int index = Integer.parseInt(part.getBaseString());
+        directSubOptions = List.of(value.get(index));
+      } catch (Exception e) {
+        throw new OptionException.CantFindSpecifiedChild(this, part.getBaseString(), e);
+      }
+    }
+    for (Option<?> directSubOption : directSubOptions) {
+      if (directSubOption instanceof CollectionOption<?> collectionOption) {
+        subOptions.addAll(collectionOption.getSubOptions(subParts));
+      } else if (subParts.isEmpty()) {
+        subOptions.add(directSubOption);
+      }
+    }
+    return subOptions;
+  }
+
   @Override
   public void removeChild(Option<?> option) {
     value.remove(option);
