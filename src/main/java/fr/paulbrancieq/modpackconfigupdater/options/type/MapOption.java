@@ -41,7 +41,7 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
 
   @SuppressWarnings("Duplicates")
   @Override
-  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren {
     if (parts.isEmpty()) {
       return List.of(this);
     }
@@ -52,7 +52,7 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
     if (part.isFilter()) {
       directSubOptions = part.getFilter().filter(this);
     } else if (!value.containsKey(part.getBaseString())) {
-      throw new OptionException.CantFindSpecifiedChild(this, part.getBaseString());
+      directSubOptions = List.of();
     } else {
       directSubOptions = List.of(value.get(part.getBaseString()));
     }

@@ -5,5 +5,18 @@
         "string": "string"
       }
     }
-  }
+  },
+  "mixObjectAndList1": [
+    {
+      "string": "string",
+      "int": 0
+    }
+  ],
+  "filterList1": [
+    "string1",
+    "string2",
+    "string3",
+    "string4",
+    "string5"
+  ]
 }

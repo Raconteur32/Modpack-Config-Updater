@@ -18,4 +18,14 @@ public class FilterException extends Exception {
       super(message, cause);
     }
   }
+
+  public static class InvalidValueToFilter extends FilterException {
+    public InvalidValueToFilter(String value, String[] validValues) {
+      super("Invalid value to filter: " + value + ". Valid values are: " + String.join(", ", validValues));
+    }
+
+    public InvalidValueToFilter(String value, String[] validValues, Throwable cause) {
+      super("Invalid value to filter: " + value + ". Valid values are: " + String.join(", ", validValues), cause);
+    }
+  }
 }

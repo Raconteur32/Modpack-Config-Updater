@@ -11,6 +11,12 @@ public class OptionException extends Exception {
     super(message, cause);
   }
 
+  public static class OptionCantBeCasted extends OptionException {
+    public OptionCantBeCasted(Option<?> option, Class<?> clazz) {
+      super("Option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ") can't be casted to " + clazz);
+    }
+  }
+
   public static class CantMergeOption extends OptionException {
     public CantMergeOption(Option<?> baseOption, Option<?> optionToMerge, String reason) {
       super("Can't merge option " + optionToMerge.getOptionPath().getFullPath() +
@@ -33,16 +39,6 @@ public class OptionException extends Exception {
   public static class OptionDoesNotHaveChildren extends OptionException {
     public OptionDoesNotHaveChildren(Option<?> option) {
       super("Option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ") does not have children");
-    }
-  }
-
-  public static class CantFindSpecifiedChild extends OptionException {
-    public CantFindSpecifiedChild(Option<?> option, String childId) {
-      super("Can't find specified child " + childId + " in option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ")");
-    }
-
-    public CantFindSpecifiedChild(Option<?> option, String childId, Throwable cause) {
-      super("Can't find specified child " + childId + " in option " + option.getOptionPath().getFullPath() + "(" + option.getValue().getClass() + ")", cause);
     }
   }
 

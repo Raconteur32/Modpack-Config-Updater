@@ -1,0 +1,8 @@
+{
+  "string": "string",
+  "number": 42,
+  "object": {
+    "string": "string",
+    "number": 42
+  }
+}

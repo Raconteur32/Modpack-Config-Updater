@@ -42,7 +42,7 @@ public class ListOption extends CollectionOption<List<Option<?>>> {
 
   @SuppressWarnings("Duplicates")
   @Override
-  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren {
     if (parts.isEmpty()) {
       return List.of(this);
     }
@@ -57,7 +57,7 @@ public class ListOption extends CollectionOption<List<Option<?>>> {
         int index = Integer.parseInt(part.getBaseString());
         directSubOptions = List.of(value.get(index));
       } catch (Exception e) {
-        throw new OptionException.CantFindSpecifiedChild(this, part.getBaseString(), e);
+        directSubOptions = List.of();
       }
     }
     for (Option<?> directSubOption : directSubOptions) {

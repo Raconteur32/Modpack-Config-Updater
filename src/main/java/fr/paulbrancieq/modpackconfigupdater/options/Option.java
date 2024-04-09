@@ -30,6 +30,14 @@ public abstract class Option<T> {
     }
   }
 
+  public <O extends Option<?>> O as(Class<O> optionClass) throws OptionException.OptionCantBeCasted {
+    if (optionClass.isInstance(this)) {
+      return optionClass.cast(this);
+    } else {
+      throw new OptionException.OptionCantBeCasted(this, optionClass);
+    }
+  }
+
   @SuppressWarnings({"unchecked", "rawtypes"})
   public static Option<?> fromSerializableValue(OptionPath optionPath, Backup backup, Object value, CollectionOption<?> parent) {
     if (value instanceof Boolean) {
@@ -83,11 +91,11 @@ public abstract class Option<T> {
     return value;
   }
 
-  public final List<Option<?>> getSubOptions(OptionPath optionPath) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+  public final List<Option<?>> getSubOptions(OptionPath optionPath) throws OptionException.OptionDoesNotHaveChildren {
     return getSubOptions(optionPath.getInFileOptionPathParts());
   }
 
-  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren, OptionException.CantFindSpecifiedChild {
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren {
     throw new OptionException.OptionDoesNotHaveChildren(this);
   }
 

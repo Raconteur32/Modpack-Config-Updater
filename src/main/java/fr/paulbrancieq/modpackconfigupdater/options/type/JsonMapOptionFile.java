@@ -10,7 +10,6 @@ import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +70,7 @@ public class JsonMapOptionFile extends MapOption {
       BufferedReader reader = new BufferedReader(new java.io.FileReader(file));
       Map<String, Object> value = gson.fromJson(reader, new TypeToken<Map<String, Object>>(){}.getType());
       return new JsonMapOptionFile(basePath, optionPath, backup, serializableMapToOptionMap(optionPath, backup, value), null);
-    } catch (FileNotFoundException | JsonParseException e) {
+    } catch (Exception e) {
       throw new OptionException.FileException.CantReadFile(Path.of(basePath, optionPath.getFilePath()).toString(), e);
     }
   }

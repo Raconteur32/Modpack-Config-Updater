@@ -17,14 +17,14 @@ public abstract class OptionFileLoader {
   public OptionFileLoader(List<String> acceptedExtensions) {
     this.acceptedExtensions = acceptedExtensions;
   }
-  public Optional<Option<?>> tryLoad(String aPath, String rPath, Backup backup) {
+  public Optional<Option<?>> tryLoad(String basePath, String rPath, Backup backup) {
     if (acceptedExtensions.stream().anyMatch(rPath::endsWith)) {
-      return load(aPath, rPath, backup);
+      return load(basePath, rPath, backup);
     }
     return Optional.empty();
   }
-  public Optional<Option<?>> forceLoad(String aPath, String rPath, Backup backup) {
-    return load(aPath, rPath, backup);
+  public Optional<Option<?>> forceLoad(String basePath, String rPath, Backup backup) {
+    return load(basePath, rPath, backup);
   }
   protected abstract Optional<Option<?>> load(String basePath, String rPath, Backup backup);
 

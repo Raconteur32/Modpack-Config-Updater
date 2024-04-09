@@ -46,7 +46,7 @@ public class Filter {
         }
       }
     } else if (option.getValue() instanceof List) {
-      ListOption listOption = (ListOption) option.getValue();
+      ListOption listOption = (ListOption) option;
       for (int i = 0; i < listOption.getValue().size(); i++) {
         int finalI = i;
         boolean passFilter = filters.stream().allMatch(filter -> filter.filter(listOption.getValue().get(finalI), finalI));
@@ -67,7 +67,11 @@ public class Filter {
       if (parts.length != 2) {
         throw new FilterException.InvalidFilterString("Invalid sub-filter format: " + filterString);
       }
-      this.valueToFilter = parts[0];
+      String[] acceptedValuesToFilter = {"mcu_index", "mcu_key", "mcu_value"};
+      this.valueToFilter = parts[0].substring(1, parts[0].length() - 1);
+      if (!List.of(acceptedValuesToFilter).contains(valueToFilter)) {
+        throw new FilterException.InvalidValueToFilter(valueToFilter, acceptedValuesToFilter);
+      }
       String expectedValueExpression = parts[1];
       this.filterFunction = generateValueValidator(expectedValueExpression);
     }
@@ -80,8 +84,11 @@ public class Filter {
       if (valueToFilter.equals("mcu_index") || valueToFilter.equals("mcu_key")) {
         return filterFunction.filter(indexOrKey);
       }
-      Object value = option.getValue();
-      return this.filterFunction.filter(value);
+      if (valueToFilter.equals("mcu_value")) {
+        Object value = option.getValue();
+        return this.filterFunction.filter(value);
+      }
+      throw new RuntimeException("Invalid value to filter: " + valueToFilter);
     }
 
     public static class ValueValidator {
