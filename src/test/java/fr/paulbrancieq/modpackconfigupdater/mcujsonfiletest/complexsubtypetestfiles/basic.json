@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "object": {
+    "id": "test",
+    "name": "test"
+  },
+  "list": [
+    {
+      "id": "test",
+      "name": "test"
+    }
+  ]
+}

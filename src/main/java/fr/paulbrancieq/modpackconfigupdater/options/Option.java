@@ -26,7 +26,8 @@ public abstract class Option<T> {
     if (optionPath.getInFileOptionPathParts().isEmpty()) {
       this.optionName = optionPath.getFilePath();
     } else {
-      this.optionName = optionPath.getInFileOptionPathParts().get(optionPath.getInFileOptionPathParts().size() - 1).getBaseString();
+      this.optionName =
+          optionPath.getInFileOptionPathParts().get(optionPath.getInFileOptionPathParts().size() - 1).getBaseString();
     }
   }
 
@@ -39,7 +40,8 @@ public abstract class Option<T> {
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  public static Option<?> fromSerializableValue(OptionPath optionPath, Backup backup, Object value, CollectionOption<?> parent) {
+  public static Option<?> fromSerializableValue(OptionPath optionPath, Backup backup, Object value,
+                                                CollectionOption<?> parent) {
     if (value instanceof Boolean) {
       return new BooleanOption(optionPath, backup, (Boolean) value, parent);
     } else if (value instanceof Integer) {
@@ -67,7 +69,8 @@ public abstract class Option<T> {
     }
   }
 
-  public void save() throws OptionException.FileException.CantWriteFile, OptionException.FileException.CantDeleteFile, OptionException.CantSaveOption {
+  public void save() throws OptionException.FileException.CantWriteFile, OptionException.FileException.CantDeleteFile,
+      OptionException.CantSaveOption {
     if (getParent().isPresent()) {
       getParent().get().save();
     }
@@ -95,8 +98,8 @@ public abstract class Option<T> {
     return getSubOptions(optionPath.getInFileOptionPathParts());
   }
 
-  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren {
-    throw new OptionException.OptionDoesNotHaveChildren(this);
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) {
+    return List.of();
   }
 
   public abstract void merge(Option<?> option) throws OptionException.CantMergeOption;
@@ -108,7 +111,12 @@ public abstract class Option<T> {
 
   @MustBeInvokedByOverriders
   public void override(Option<?> newOption) {
-    getParent().ifPresent(parent -> parent.overrideChild(this, newOption));
+    getParent().ifPresent(parent ->parent.overrideChild(this, newOption));
+  }
+  
+  public boolean isUntargetable() {
+    return (getParent().isPresent() && getParent().get().isUntargetable()) ||
+        (getParent().isPresent() && getParent().get() instanceof ListOption);
   }
 
   protected void backup() throws OptionException.CantSaveOption {

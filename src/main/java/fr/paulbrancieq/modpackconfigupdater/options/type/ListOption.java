@@ -42,7 +42,7 @@ public class ListOption extends CollectionOption<List<Option<?>>> {
 
   @SuppressWarnings("Duplicates")
   @Override
-  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren {
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) {
     if (parts.isEmpty()) {
       return List.of(this);
     }

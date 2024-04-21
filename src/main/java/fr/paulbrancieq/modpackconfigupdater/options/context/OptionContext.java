@@ -1,7 +1,6 @@
 package fr.paulbrancieq.modpackconfigupdater.options.context;
 
 import fr.paulbrancieq.modpackconfigupdater.Backup;
-import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
 import org.apache.commons.io.FileUtils;
@@ -52,7 +51,7 @@ public class OptionContext {
     }
   }
 
-  public List<Option<?>> getOptionsFromOptionPath(OptionPath optionPath) throws OptionException.OptionDoesNotHaveChildren {
+  public List<Option<?>> getOptionsFromOptionPath(OptionPath optionPath) {
     List<Option<?>> options = new ArrayList<>();
     if (!optionsMap.containsKey(Path.of(optionPath.getFilePath()).normalize())) {
       return options;

@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater;
+package fr.paulbrancieq.modpackconfigupdater.oldtest;
 
 import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
@@ -19,8 +19,8 @@ public class OptionContextTest {
     OptionContext optionContext = new OptionContext("D:\\Workspace\\minecraft\\mods\\modpack-configuration-updater\\src\\test\\java\\fr\\paulbrancieq\\modpackconfigupdater\\optionContextTest", null, List.of());
     List<Option<?>> optionList = null;
     try {
-      optionList = optionContext.getOptionsFromOptionPath(new OptionPath("test1.json:"));
-    } catch (OptionException.OptionDoesNotHaveChildren e) {
+      optionList = optionContext.getOptionsFromOptionPath(new OptionPath("basic.json:"));
+    } catch (Exception e) {
       fail(e);
     }
     assertEquals(1, optionList.size());
@@ -38,8 +38,8 @@ public class OptionContextTest {
     List<Option<?>> optionList = null;
     // get file option
     try {
-      optionList = optionContext.getOptionsFromOptionPath(new OptionPath("test2.json:"));
-    } catch (OptionException.OptionDoesNotHaveChildren e) {
+      optionList = optionContext.getOptionsFromOptionPath(new OptionPath("missingVersionField.json:"));
+    } catch (Exception e) {
       fail(e);
     }
     assertEquals(1, optionList.size());
@@ -52,8 +52,8 @@ public class OptionContextTest {
     assertEquals(6, listOption.getValue().size());
     // get filtered options
     try {
-      optionList = optionContext.getOptionsFromOptionPath(new OptionPath("test2.json:[\"mcu_value\";\"test[2-4]\",\"mcu_index\";2__4]"));
-    } catch (OptionException.OptionDoesNotHaveChildren e) {
+      optionList = optionContext.getOptionsFromOptionPath(new OptionPath("missingVersionField.json:[\"mcu_value\";\"test[2-4]\",\"mcu_index\";2__4]"));
+    } catch (Exception e) {
       fail(e);
     }
     assertEquals(2, optionList.size());

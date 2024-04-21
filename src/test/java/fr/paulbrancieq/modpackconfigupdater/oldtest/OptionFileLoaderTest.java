@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater;
+package fr.paulbrancieq.modpackconfigupdater.oldtest;
 
 import fr.paulbrancieq.modpackconfigupdater.exceptions.OptionException;
 import fr.paulbrancieq.modpackconfigupdater.options.Option;
@@ -20,7 +20,7 @@ public class OptionFileLoaderTest {
   @Test
   public void testLoad() {
     OptionFileLoader.Json jsonLoader = new OptionFileLoader.Json();
-    Optional<Option<?>> optional = jsonLoader.tryLoad(Path.of(currentPath.toString(), "src/test/java/fr/paulbrancieq/modpackconfigupdater/optionFileLoaderTest/").toString(), "test1.json", null);
+    Optional<Option<?>> optional = jsonLoader.tryLoad(Path.of(currentPath.toString(), "src/test/java/fr/paulbrancieq/modpackconfigupdater/optionFileLoaderTest/").toString(), "basic.json", null);
     assertTrue(optional.isPresent());
     JsonMapOptionFile optionFile = (JsonMapOptionFile) optional.get();
     assertEquals("test", optionFile.getValue().get("test").getValue());
@@ -29,7 +29,7 @@ public class OptionFileLoaderTest {
   @Test
   public void testLoad2() {
     OptionFileLoader.Json jsonLoader = new OptionFileLoader.Json();
-    Optional<Option<?>> optional = jsonLoader.tryLoad(Path.of(currentPath.toString(), "src/test/java/fr/paulbrancieq/modpackconfigupdater/optionFileLoaderTest/").toString(), "test2.json", null);
+    Optional<Option<?>> optional = jsonLoader.tryLoad(Path.of(currentPath.toString(), "src/test/java/fr/paulbrancieq/modpackconfigupdater/optionFileLoaderTest/").toString(), "missingVersionField.json", null);
     assertTrue(optional.isPresent());
     JsonMapOptionFile optionFile = (JsonMapOptionFile) optional.get();
     // get object

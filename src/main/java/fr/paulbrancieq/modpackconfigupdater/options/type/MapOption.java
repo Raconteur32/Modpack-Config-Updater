@@ -41,7 +41,7 @@ public class MapOption extends CollectionOption<Map<Object, Option<?>>> {
 
   @SuppressWarnings("Duplicates")
   @Override
-  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) throws OptionException.OptionDoesNotHaveChildren {
+  public List<Option<?>> getSubOptions(List<OptionPath.InFileOptionPathPart> parts) {
     if (parts.isEmpty()) {
       return List.of(this);
     }

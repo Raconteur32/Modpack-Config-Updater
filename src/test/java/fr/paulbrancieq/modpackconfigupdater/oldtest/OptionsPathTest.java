@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater;
+package fr.paulbrancieq.modpackconfigupdater.oldtest;
 
 import fr.paulbrancieq.modpackconfigupdater.path.OptionPath;
 import org.junit.jupiter.api.Test;
