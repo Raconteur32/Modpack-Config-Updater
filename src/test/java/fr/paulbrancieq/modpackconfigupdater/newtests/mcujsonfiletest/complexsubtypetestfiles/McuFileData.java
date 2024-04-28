@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.subtypetestfiles;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.complexsubtypetestfiles;
 
 import com.google.gson.annotations.Expose;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.JsonRequired;
@@ -9,9 +9,9 @@ import java.util.List;
 public class McuFileData extends McuJsonFileData {
   @JsonRequired
   @Expose
-  public SubType object;
+  public ComplexSubType object;
 
   @Expose
   @JsonRequired
-  public List<SubType> list;
+  public List<ComplexSubType> list;
 }

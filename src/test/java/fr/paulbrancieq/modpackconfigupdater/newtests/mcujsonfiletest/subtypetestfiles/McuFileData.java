@@ -1,22 +1,17 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.basictestfiles;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.subtypetestfiles;
 
 import com.google.gson.annotations.Expose;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.JsonRequired;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.McuJsonFileData;
 
+import java.util.List;
+
 public class McuFileData extends McuJsonFileData {
   @JsonRequired
   @Expose
-  private String id;
+  public SubType object;
 
   @Expose
-  private String name;
-
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
+  @JsonRequired
+  public List<SubType> list;
 }

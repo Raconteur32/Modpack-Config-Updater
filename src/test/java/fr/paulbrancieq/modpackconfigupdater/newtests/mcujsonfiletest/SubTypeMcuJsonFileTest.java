@@ -1,9 +1,9 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest;
 
 import com.google.gson.JsonParseException;
-import fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.subtypetestfiles.McuFile;
-import fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.subtypetestfiles.McuFileData;
-import fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.subtypetestfiles.SubType;
+import fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.subtypetestfiles.McuFile;
+import fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.subtypetestfiles.McuFileData;
+import fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.subtypetestfiles.SubType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SubTypeMcuJsonFileTest {
   @Test
   public void testFieldRetrieve() {
-    McuFile mcuFile = new McuFile("src/test/java/fr/paulbrancieq/modpackconfigupdater/mcujsonfiletest/subtypetestfiles/basic.json");
+    McuFile mcuFile = new McuFile("src/test/java/fr/paulbrancieq/modpackconfigupdater/newtests/mcujsonfiletest/subtypetestfiles/basic.json");
     McuFileData mcuData = mcuFile.getData();
     SubType object = mcuData.object;
     assertEquals("test", object.id);
@@ -25,7 +25,7 @@ public class SubTypeMcuJsonFileTest {
   @Test
   public void testMissingRequiredField() {
     assertThrows(JsonParseException.class, () -> {
-      McuFile mcuFile = new McuFile("src/test/java/fr/paulbrancieq/modpackconfigupdater/mcujsonfiletest/subtypetestfiles/missingRequiredField.json");
+      McuFile mcuFile = new McuFile("src/test/java/fr/paulbrancieq/modpackconfigupdater/newtests/mcujsonfiletest/subtypetestfiles/missingRequiredField.json");
     });
   }
 }

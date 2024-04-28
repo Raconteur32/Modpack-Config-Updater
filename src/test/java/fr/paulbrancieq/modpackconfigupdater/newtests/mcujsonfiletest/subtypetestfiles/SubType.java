@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.subtypetestfiles;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.subtypetestfiles;
 
 import com.google.gson.annotations.Expose;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.JsonRequired;

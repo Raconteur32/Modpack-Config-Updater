@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.complexsubtypetestfiles;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.basictestfiles;
 
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.McuJsonFile;
 

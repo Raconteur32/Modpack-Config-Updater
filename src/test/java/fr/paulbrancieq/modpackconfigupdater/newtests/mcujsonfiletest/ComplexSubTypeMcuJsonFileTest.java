@@ -1,8 +1,8 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest;
 
-import fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.complexsubtypetestfiles.ComplexSubType;
-import fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.complexsubtypetestfiles.McuFile;
-import fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.complexsubtypetestfiles.McuFileData;
+import fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.complexsubtypetestfiles.ComplexSubType;
+import fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.complexsubtypetestfiles.McuFile;
+import fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.complexsubtypetestfiles.McuFileData;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ComplexSubTypeMcuJsonFileTest {
   @Test
   public void testFieldRetrieve() {
-    McuFile mcuFile = new McuFile("src/test/java/fr/paulbrancieq/modpackconfigupdater/mcujsonfiletest/complexsubtypetestfiles/basic.json");
+    McuFile mcuFile = new McuFile("src/test/java/fr/paulbrancieq/modpackconfigupdater/newtests/mcujsonfiletest/complexsubtypetestfiles/basic.json");
     McuFileData mcuData = mcuFile.getData();
     ComplexSubType object = mcuData.object;
     assertEquals("test", object.id);

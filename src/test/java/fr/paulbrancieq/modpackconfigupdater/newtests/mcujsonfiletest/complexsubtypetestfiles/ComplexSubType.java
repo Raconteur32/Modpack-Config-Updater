@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.mcujsonfiletest.complexsubtypetestfiles;
+package fr.paulbrancieq.modpackconfigupdater.newtests.mcujsonfiletest.complexsubtypetestfiles;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.JsonAdapter;
