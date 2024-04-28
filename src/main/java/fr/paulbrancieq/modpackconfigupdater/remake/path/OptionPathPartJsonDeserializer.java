@@ -11,14 +11,12 @@ public class OptionPathPartJsonDeserializer implements JsonDeserializer<OptionPa
   public OptionPathPart deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
         .registerTypeAdapterFactory(new AnnotatedTypeAdapterFactory()).create();
-    try {
-      return gson.fromJson(json, UniqueOptionPathPart.class);
-    } catch (JsonParseException ignored) {
-    }
-    try {
+    if (json.isJsonObject() || json.isJsonArray()) {
       return gson.fromJson(json, FilterOptionPathPart.class);
-    } catch (JsonParseException ignored) {
     }
-    throw new JsonParseException(json.toString() + "is not a valid option path part. It should either be a string or a filter (unique or array of validator objects)");
+    if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
+      return new UniqueOptionPathPart(json.getAsString());
+    }
+    throw new JsonParseException(json + " is not a valid OptionPathPart. It must be a JsonObject, JsonArray or String.");
   }
 }
