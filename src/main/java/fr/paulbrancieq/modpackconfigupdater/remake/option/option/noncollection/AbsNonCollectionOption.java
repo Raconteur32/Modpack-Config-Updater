@@ -35,7 +35,13 @@ public abstract class AbsNonCollectionOption<T> extends OptionBasicImpl<T> {
   }
 
   @Override
-  public OptionContainer removeChildOption(@NotNull OptionPathPart pathPart)
+  public void defaultChildOption(@NotNull Option<?> refOption)
+          throws CollectionOptionChildOperationException.NotACollectionOption {
+    throw new CollectionOptionChildOperationException.NotACollectionOption();
+  }
+
+  @Override
+  public void removeChildOption(@NotNull OptionPathPart pathPart)
           throws CollectionOptionChildOperationException {
     throw new CollectionOptionChildOperationException.NotACollectionOption();
   }

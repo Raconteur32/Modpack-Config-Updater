@@ -53,7 +53,12 @@ public record NullOption(OptionContainer container) implements Option<Object> {
   }
 
   @Override
-  public OptionContainer removeChildOption(@NotNull OptionPathPart pathPart)
+  public void defaultChildOption(@NotNull Option<?> refOption) throws CollectionOptionChildOperationException {
+    throw new CollectionOptionChildOperationException.NotACollectionOption();
+  }
+
+  @Override
+  public void removeChildOption(@NotNull OptionPathPart pathPart)
           throws CollectionOptionChildOperationException {
     throw new CollectionOptionChildOperationException.NotACollectionOption();
   }

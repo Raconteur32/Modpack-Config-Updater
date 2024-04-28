@@ -33,10 +33,4 @@ public abstract class CollectionOptionChildOperationException extends Exception 
       super("The child does not exist.");
     }
   }
-
-  public static class InvalidKeyIndex extends CollectionOptionChildOperationException {
-    public InvalidKeyIndex(String message) {
-      super(message);
-    }
-  }
 }
