@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart;
 
 import com.google.gson.annotations.JsonAdapter;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;

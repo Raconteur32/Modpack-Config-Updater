@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart;
 
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 

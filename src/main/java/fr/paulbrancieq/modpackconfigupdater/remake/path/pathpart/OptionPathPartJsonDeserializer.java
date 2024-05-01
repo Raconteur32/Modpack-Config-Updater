@@ -1,8 +1,8 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart;
 
 import com.google.gson.*;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.AnnotatedTypeAdapterFactory;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.filters.FilterOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.FilterOptionPathPart;
 
 import java.lang.reflect.Type;
 

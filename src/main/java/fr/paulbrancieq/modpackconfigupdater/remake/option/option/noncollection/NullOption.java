@@ -5,8 +5,8 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionConta
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.OptionContextVisitor;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

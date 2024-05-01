@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path.filters.validators;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.validators;
 
 import com.google.gson.*;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.AnnotatedTypeAdapterFactory;

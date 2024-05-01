@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path.filters.validators;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.validators;
 
 public enum FilterValidatorType {
   RANGE("range", RangeFilterOptionPathPartValidator.class); // TODO: Add more filter types

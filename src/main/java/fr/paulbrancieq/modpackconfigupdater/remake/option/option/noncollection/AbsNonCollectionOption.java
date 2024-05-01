@@ -4,8 +4,8 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.CollectionOptionChildO
 import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionContainer;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.OptionBasicImpl;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

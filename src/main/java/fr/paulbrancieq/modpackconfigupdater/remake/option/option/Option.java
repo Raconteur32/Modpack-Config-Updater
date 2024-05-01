@@ -7,8 +7,8 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.MapO
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.NullOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.StringOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

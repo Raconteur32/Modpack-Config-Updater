@@ -1,10 +1,10 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path.filters;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters;
 
 import com.google.gson.annotations.Expose;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.JsonRequired;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.filters.validators.FilterOptionPathPartValidator;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.validators.FilterOptionPathPartValidator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

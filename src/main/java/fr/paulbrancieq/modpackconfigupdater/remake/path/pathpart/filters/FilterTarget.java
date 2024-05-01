@@ -1,4 +1,4 @@
-package fr.paulbrancieq.modpackconfigupdater.remake.path.filters;
+package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters;
 
 public enum FilterTarget {
   OPTION_VALUE("value"), INDEX("index");

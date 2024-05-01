@@ -1,5 +1,6 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.path;
 
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

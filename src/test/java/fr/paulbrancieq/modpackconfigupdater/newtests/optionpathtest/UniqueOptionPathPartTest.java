@@ -1,6 +1,6 @@
 package fr.paulbrancieq.modpackconfigupdater.newtests.optionpathtest;
 
-import fr.paulbrancieq.modpackconfigupdater.remake.path.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
