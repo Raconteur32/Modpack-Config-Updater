@@ -1,5 +1,7 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.path;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,8 @@ public class InFileUniqueOptionPath extends InFileOptionPath {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<UniqueOptionPathPart> getOptionPathParts() {
+  public @NotNull
+  List<UniqueOptionPathPart> getOptionPathParts() {
     return (List<UniqueOptionPathPart>) optionPathParts;
   }
 }

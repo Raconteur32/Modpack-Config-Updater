@@ -2,6 +2,7 @@ package fr.paulbrancieq.modpackconfigupdater.remake.path.filters.validators;
 
 import com.google.gson.annotations.Expose;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.JsonRequired;
+import org.jetbrains.annotations.Nullable;
 
 public class RangeFilterOptionPathPartValidator extends FilterOptionPathPartValidator {
   @Expose
@@ -12,7 +13,7 @@ public class RangeFilterOptionPathPartValidator extends FilterOptionPathPartVali
   private int max;
 
   @Override
-  public boolean match(Object otherStringPathPart) {
+  public boolean match(@Nullable Object otherStringPathPart) {
     if (otherStringPathPart instanceof Integer) {
       int otherNumber = (int) otherStringPathPart;
       return otherNumber >= min && otherNumber <= max;

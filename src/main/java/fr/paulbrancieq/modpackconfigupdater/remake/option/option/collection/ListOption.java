@@ -70,13 +70,13 @@ public class ListOption extends CollectionOption<List<OptionContainer>> {
 
   @Override
   public List<OptionContainer> getChildContainerListFromPathPart(@NotNull OptionPathPart pathPart) {
-    return value.stream().filter(optionContainer -> pathPart.match(getContainer().getPathPart())).toList();
+    return value.stream().filter(optionContainer -> pathPart.match(optionContainer.getOption())).toList();
   }
 
   @Override
   public @NotNull OptionContainer getChildContainerFromUniquePathPart(@NotNull UniqueOptionPathPart pathPart)
           throws CollectionOptionChildOperationException.ChildDoesNotExist {
-    return value.stream().filter(optionContainer -> pathPart.match(getContainer().getPathPart())).findFirst()
+    return value.stream().filter(optionContainer -> pathPart.match(optionContainer.getOption())).findFirst()
             .orElseThrow(CollectionOptionChildOperationException.ChildDoesNotExist::new);
   }
 
@@ -94,7 +94,7 @@ public class ListOption extends CollectionOption<List<OptionContainer>> {
 
   @Override
   public void removeChildOption(@NotNull OptionPathPart pathPart) {
-    List<OptionContainer> optionContainer = value.stream().filter(oc -> pathPart.match(oc.getPathPart())).toList();
+    List<OptionContainer> optionContainer = value.stream().filter(oc -> pathPart.match(oc.getOption())).toList();
     for (OptionContainer oc : optionContainer) {
       value.remove(oc);
     }

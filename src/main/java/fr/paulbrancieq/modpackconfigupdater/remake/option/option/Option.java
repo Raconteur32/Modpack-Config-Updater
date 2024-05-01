@@ -6,6 +6,7 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.List
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.MapOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.NullOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.StringOption;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPathPart;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.UniqueOptionPathPart;
 import org.apache.commons.lang3.NotImplementedException;
@@ -37,6 +38,8 @@ public interface Option<ValueT> {
   void defaultChildOption(@NotNull Option<?> refOption) throws CollectionOptionChildOperationException;
 
   void removeChildOption(@NotNull OptionPathPart pathPart) throws CollectionOptionChildOperationException;
+
+  @NotNull List<Option<?>> getFromPath(@NotNull OptionContextVisitor visitor, @NotNull InFileOptionPath path);
 
   @FunctionalInterface
   interface OptionFactory<T> {

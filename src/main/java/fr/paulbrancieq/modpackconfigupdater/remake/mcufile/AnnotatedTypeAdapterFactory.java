@@ -28,13 +28,14 @@ public class AnnotatedTypeAdapterFactory implements TypeAdapterFactory {
     }
     return fields.toArray(new Field[0]);
   }
+
   @Override
   public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
     Class<? super T> rawType = typeToken.getRawType();
 
     Set<Field> requiredFields = Stream.of(getFields(rawType))
-        .filter(f -> f.getAnnotation(JsonRequired.class) != null)
-        .collect(Collectors.toSet());
+            .filter(f -> f.getAnnotation(JsonRequired.class) != null)
+            .collect(Collectors.toSet());
 
     if (requiredFields.isEmpty()) {
       return null;
@@ -62,8 +63,8 @@ public class AnnotatedTypeAdapterFactory implements TypeAdapterFactory {
           }
           if (!missingFields.isEmpty()) {
             throw new JsonParseException(
-                String.format("Missing required fields %s for %s",
-                    missingFields, rawType.getName()));
+                    String.format("Missing required fields %s for %s",
+                            missingFields, rawType.getName()));
           }
         }
 

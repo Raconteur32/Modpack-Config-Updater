@@ -69,7 +69,7 @@ public class MapOption extends CollectionOption<Map<String, OptionContainer>> {
 
   @Override
   public List<OptionContainer> getChildContainerListFromPathPart(@NotNull OptionPathPart pathPart) {
-    return value.values().stream().filter(optionContainer -> pathPart.match(getContainer().getPathPart())).toList();
+    return value.values().stream().filter(optionContainer -> pathPart.match(optionContainer.getOption())).toList();
   }
 
   @Override
@@ -104,8 +104,8 @@ public class MapOption extends CollectionOption<Map<String, OptionContainer>> {
 
   @Override
   public void removeChildOption(@NotNull OptionPathPart pathPart) throws CollectionOptionChildOperationException {
-    List< Map.Entry<String, OptionContainer>> toRemove = value.entrySet().stream()
-            .filter(entry -> pathPart.match(entry.getKey())).toList();
+    List<Map.Entry<String, OptionContainer>> toRemove =
+            value.entrySet().stream().filter(entry -> pathPart.match(entry.getValue().getOption())).toList();
     for (Map.Entry<String, OptionContainer> entry : toRemove) {
       value.remove(entry.getKey());
     }

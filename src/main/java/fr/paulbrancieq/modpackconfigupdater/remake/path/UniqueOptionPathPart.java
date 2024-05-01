@@ -1,5 +1,7 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.path;
 
+import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,11 +15,16 @@ public class UniqueOptionPathPart extends OptionPathPart {
   }
 
   @Override
-  public boolean match(Object otherStringPathPart) {
-    if (!(otherStringPathPart instanceof String)) {
-      return stringPathPart.equals(otherStringPathPart.toString());
+  public boolean match(Object objectToMatch) {
+    if (!(objectToMatch instanceof String)) {
+      return stringPathPart.equals(objectToMatch.toString());
     }
-    return stringPathPart.equals(otherStringPathPart);
+    return stringPathPart.equals(objectToMatch);
+  }
+
+  @Override
+  public boolean match(Option<?> option) {
+    return match(option.getContainer().getPathPart());
   }
 
   public String getStringPathPart() {
