@@ -3,6 +3,7 @@ package fr.paulbrancieq.modpackconfigupdater.remake.path;
 import com.google.gson.*;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.AnnotatedTypeAdapterFactory;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -19,7 +20,11 @@ public class OptionPathDeserializer implements JsonDeserializer<OptionPath> {
     } else if (json.isJsonArray()) {
       List<OptionPathPart> optionPathParts = new ArrayList<>();
       for (JsonElement jsonElement : json.getAsJsonArray()) {
-        optionPathParts.add(gson.fromJson(jsonElement, OptionPathPart.class));
+        if (jsonElement.isJsonPrimitive() && jsonElement.getAsJsonPrimitive().isString()) {
+          optionPathParts.addAll(SimpleOptionPathPart.fromMultiPartString(jsonElement.getAsString()));
+        } else {
+          optionPathParts.add(gson.fromJson(jsonElement, OptionPathPart.class));
+        }
       }
       return new OptionPath(optionPathParts);
     }

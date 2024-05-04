@@ -14,7 +14,11 @@ public class OptionRefDeserializer implements JsonDeserializer<OptionRef> {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapterFactory(new AnnotatedTypeAdapterFactory()).create();
     if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
-      return new OptionRef(json.getAsString());
+      try {
+        return new OptionRef(json.getAsString());
+      } catch (IllegalArgumentException e) {
+        throw new JsonParseException(e.getMessage());
+      }
     } else if (json.isJsonObject()) {
       if (!json.getAsJsonObject().has("filepath") || !json.getAsJsonObject().get("filepath").isJsonPrimitive() ||
               !json.getAsJsonObject().get("filepath").getAsJsonPrimitive().isString()) {

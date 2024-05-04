@@ -3,6 +3,7 @@ package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.valida
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.JsonAdapter;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.JsonRequired;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.validators.type.FilterValidatorType;
 import org.jetbrains.annotations.Nullable;
 
 @JsonAdapter(FilterOptionPathPartValidatorJsonDeserializer.class)

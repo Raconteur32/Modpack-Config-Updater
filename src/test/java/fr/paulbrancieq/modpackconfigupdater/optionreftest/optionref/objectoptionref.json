@@ -1,0 +1,17 @@
+{
+  "filepath": "src/HelloWorld.json",
+  "optionpath": [
+    "object.list",
+    {
+      "target": "index",
+      "validators": [
+        {
+          "type": "range",
+          "min": 0,
+          "max": 2
+        }
+      ]
+    },
+    "specific.option.name"
+  ]
+}

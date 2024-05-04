@@ -2,6 +2,7 @@ package fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.valida
 
 import com.google.gson.*;
 import fr.paulbrancieq.modpackconfigupdater.remake.mcufile.AnnotatedTypeAdapterFactory;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.filters.validators.type.FilterValidatorType;
 
 import java.lang.reflect.Type;
 
