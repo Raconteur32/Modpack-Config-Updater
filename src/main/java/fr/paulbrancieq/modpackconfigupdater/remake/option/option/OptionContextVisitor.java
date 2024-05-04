@@ -1,6 +1,6 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.option.option;
 
-import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -8,5 +8,5 @@ import java.util.List;
 public interface OptionContextVisitor {
   @NotNull List<Option<?>> visitContext(@NotNull OptionContext optionContext);
 
-  @NotNull List<Option<?>> visitOption(@NotNull Option<?> option, @NotNull InFileOptionPath path);
+  @NotNull List<Option<?>> visitOption(@NotNull Option<?> option, @NotNull OptionPath path);
 }

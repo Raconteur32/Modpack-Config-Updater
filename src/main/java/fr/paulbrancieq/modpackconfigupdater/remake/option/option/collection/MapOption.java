@@ -5,7 +5,7 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionConta
 import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionContainerBasicImpl;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -73,7 +73,7 @@ public class MapOption extends CollectionOption<Map<String, OptionContainer>> {
   }
 
   @Override
-  public OptionContainer getChildContainerFromUniquePathPart(@NotNull UniqueOptionPathPart pathPart)
+  public OptionContainer getChildContainerFromUniquePathPart(@NotNull SimpleOptionPathPart pathPart)
           throws CollectionOptionChildOperationException {
     if (!value.containsKey(pathPart.getStringPathPart())) {
       throw new CollectionOptionChildOperationException.ChildDoesNotExist();

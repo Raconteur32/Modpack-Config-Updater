@@ -4,9 +4,9 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.CollectionOptionChildO
 import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionContainer;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.OptionContextVisitor;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +44,7 @@ public record NullOption(OptionContainer container) implements Option<Object> {
   }
 
   @Override
-  public OptionContainer getChildContainerFromUniquePathPart(@NotNull UniqueOptionPathPart pathPart)
+  public OptionContainer getChildContainerFromUniquePathPart(@NotNull SimpleOptionPathPart pathPart)
           throws CollectionOptionChildOperationException {
     throw new CollectionOptionChildOperationException.NotACollectionOption();
   }
@@ -67,7 +67,7 @@ public record NullOption(OptionContainer container) implements Option<Object> {
 
   @Override
   public @NotNull List<Option<?>> getFromPath(@NotNull OptionContextVisitor visitor,
-                                              @NotNull InFileOptionPath path) {
+                                              @NotNull OptionPath path) {
     return visitor.visitOption(this, path);
   }
 }

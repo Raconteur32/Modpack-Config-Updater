@@ -6,9 +6,9 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.List
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.MapOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.NullOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.StringOption;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +30,7 @@ public interface Option<ValueT> {
   List<OptionContainer> getChildContainerListFromPathPart(@NotNull OptionPathPart pathPart)
           throws CollectionOptionChildOperationException;
 
-  OptionContainer getChildContainerFromUniquePathPart(@NotNull UniqueOptionPathPart pathPart)
+  OptionContainer getChildContainerFromUniquePathPart(@NotNull SimpleOptionPathPart pathPart)
           throws CollectionOptionChildOperationException;
 
   void defaultOption(@NotNull Option<?> refOption) throws CollectionOptionChildOperationException;
@@ -39,7 +39,7 @@ public interface Option<ValueT> {
 
   void removeChildOption(@NotNull OptionPathPart pathPart) throws CollectionOptionChildOperationException;
 
-  @NotNull List<Option<?>> getFromPath(@NotNull OptionContextVisitor visitor, @NotNull InFileOptionPath path);
+  @NotNull List<Option<?>> getFromPath(@NotNull OptionContextVisitor visitor, @NotNull OptionPath path);
 
   @FunctionalInterface
   interface OptionFactory<T> {

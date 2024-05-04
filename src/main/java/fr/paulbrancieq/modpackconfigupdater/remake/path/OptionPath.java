@@ -1,20 +1,22 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.path;
 
+import com.google.gson.annotations.JsonAdapter;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InFileOptionPath {
+@JsonAdapter(OptionPathDeserializer.class)
+public class OptionPath {
   protected final @NotNull List<? extends OptionPathPart> optionPathParts;
 
-  protected InFileOptionPath(@NotNull List<? extends OptionPathPart> optionPathParts) {
+  protected OptionPath(@NotNull List<? extends OptionPathPart> optionPathParts) {
     this.optionPathParts = new ArrayList<>(optionPathParts);
   }
 
-  public boolean match(@NotNull InFileUniqueOptionPath otherOptionPath) {
+  public boolean match(@NotNull SimpleOptionPath otherOptionPath) {
     if (optionPathParts.size() != otherOptionPath.getOptionPathParts().size()) {
       return false;
     }
@@ -30,23 +32,23 @@ public class InFileOptionPath {
     return optionPathParts;
   }
 
-  public @NotNull InFileOptionPath resolve(@NotNull UniqueOptionPathPart uniqueOptionPathPart) {
+  public @NotNull OptionPath resolve(@NotNull SimpleOptionPathPart uniqueOptionPathPart) {
     List<OptionPathPart> newOptionPathParts = new ArrayList<>(optionPathParts);
     newOptionPathParts.add(uniqueOptionPathPart);
-    return new InFileOptionPath(newOptionPathParts);
+    return new OptionPath(newOptionPathParts);
   }
 
   public boolean isRoot() {
     return optionPathParts.isEmpty();
   }
 
-  public @NotNull InFileOptionPath getParent() throws PathException.ReachedPathRoot {
+  public @NotNull OptionPath getParent() throws PathException.ReachedPathRoot {
     if (optionPathParts.isEmpty()) {
       throw new PathException.ReachedPathRoot();
     }
     List<OptionPathPart> newOptionPathParts = new ArrayList<>(optionPathParts);
     newOptionPathParts.remove(newOptionPathParts.size() - 1);
-    return new InFileOptionPath(newOptionPathParts);
+    return new OptionPath(newOptionPathParts);
   }
 
   public @NotNull OptionPathPart getFirstPart() throws PathException.ReachedPathRoot {
@@ -56,7 +58,7 @@ public class InFileOptionPath {
     return optionPathParts.get(0);
   }
 
-  public @NotNull InFileOptionPath getConsumedPath() {
-    return new InFileOptionPath(new ArrayList<>(optionPathParts.subList(1, optionPathParts.size())));
+  public @NotNull OptionPath getConsumedPath() {
+    return new OptionPath(new ArrayList<>(optionPathParts.subList(1, optionPathParts.size())));
   }
 }

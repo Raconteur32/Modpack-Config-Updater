@@ -2,8 +2,8 @@ package fr.paulbrancieq.modpackconfigupdater.remake.option.containers;
 
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.OrphanException;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 
 public interface OptionContainer {
   Option<?> getOption();
@@ -12,7 +12,7 @@ public interface OptionContainer {
 
   void makeOrphan();
 
-  UniqueOptionPathPart getPathPart();
+  SimpleOptionPathPart getPathPart();
 
-  InFileOptionPath getPath() throws OrphanException.CantGetParentOptionFromContainer;
+  OptionPath getPath() throws OrphanException.CantGetParentOptionFromContainer;
 }

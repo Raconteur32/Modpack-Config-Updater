@@ -5,7 +5,7 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionConta
 import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionContainerBasicImpl;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -74,7 +74,7 @@ public class ListOption extends CollectionOption<List<OptionContainer>> {
   }
 
   @Override
-  public @NotNull OptionContainer getChildContainerFromUniquePathPart(@NotNull UniqueOptionPathPart pathPart)
+  public @NotNull OptionContainer getChildContainerFromUniquePathPart(@NotNull SimpleOptionPathPart pathPart)
           throws CollectionOptionChildOperationException.ChildDoesNotExist {
     return value.stream().filter(optionContainer -> pathPart.match(optionContainer.getOption())).findFirst()
             .orElseThrow(CollectionOptionChildOperationException.ChildDoesNotExist::new);

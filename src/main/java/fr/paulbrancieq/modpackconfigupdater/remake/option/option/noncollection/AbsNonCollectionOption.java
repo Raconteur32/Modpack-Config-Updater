@@ -5,7 +5,7 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionConta
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.OptionBasicImpl;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public abstract class AbsNonCollectionOption<T> extends OptionBasicImpl<T> {
   }
 
   @Override
-  public OptionContainer getChildContainerFromUniquePathPart(@NotNull UniqueOptionPathPart pathPart)
+  public OptionContainer getChildContainerFromUniquePathPart(@NotNull SimpleOptionPathPart pathPart)
           throws CollectionOptionChildOperationException.NotACollectionOption {
     throw new CollectionOptionChildOperationException.NotACollectionOption();
   }

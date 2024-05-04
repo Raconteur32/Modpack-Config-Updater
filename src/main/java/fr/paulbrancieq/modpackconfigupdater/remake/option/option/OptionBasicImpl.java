@@ -1,7 +1,7 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.option.option;
 
 import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionContainer;
-import fr.paulbrancieq.modpackconfigupdater.remake.path.InFileOptionPath;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public abstract class OptionBasicImpl<T> implements Option<T> {
   }
 
   @Override
-  public @NotNull List<Option<?>> getFromPath(@NotNull OptionContextVisitor visitor, @NotNull InFileOptionPath path) {
+  public @NotNull List<Option<?>> getFromPath(@NotNull OptionContextVisitor visitor, @NotNull OptionPath path) {
     return visitor.visitOption(this, path);
   }
 }

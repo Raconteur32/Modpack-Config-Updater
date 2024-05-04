@@ -1,6 +1,6 @@
 package fr.paulbrancieq.modpackconfigupdater.newtests.optionpathtest;
 
-import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.UniqueOptionPathPart;
+import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UniqueOptionPathPartTest {
   @Test
   public void testFromMultiPartStringBasic() {
-    List<UniqueOptionPathPart> uniqueOptionPathParts = UniqueOptionPathPart.fromMultiPartString("ab.cd.ef.gh.ij");
+    List<SimpleOptionPathPart> uniqueOptionPathParts = SimpleOptionPathPart.fromMultiPartString("ab.cd.ef.gh.ij");
     assertEquals(uniqueOptionPathParts.size(), 5);
     assertEquals(uniqueOptionPathParts.get(0).getStringPathPart(), "ab");
     assertEquals(uniqueOptionPathParts.get(1).getStringPathPart(), "cd");
@@ -21,7 +21,7 @@ public class UniqueOptionPathPartTest {
 
   @Test
   public void testFromMultiPartStringEscaped() {
-    List<UniqueOptionPathPart> uniqueOptionPathParts = UniqueOptionPathPart.fromMultiPartString("ab\\\\.cd\\.ef.gh\\\\\\.ij");
+    List<SimpleOptionPathPart> uniqueOptionPathParts = SimpleOptionPathPart.fromMultiPartString("ab\\\\.cd\\.ef.gh\\\\\\.ij");
     assertEquals(uniqueOptionPathParts.size(), 3);
     assertEquals(uniqueOptionPathParts.get(0).getStringPathPart(), "ab\\\\"); // Pair number of '\', so it's an escaped '\' and the split happens
     assertEquals(uniqueOptionPathParts.get(1).getStringPathPart(), "cd\\.ef"); // Single '\', so it's not an escaped '\', and the dot is escaped
