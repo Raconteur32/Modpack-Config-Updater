@@ -4,8 +4,8 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionConta
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbsImmutableValueOption<T> extends AbsNonCollectionOption<T> {
-  public AbsImmutableValueOption(@NotNull T value, @NotNull OptionContainer container) {
+public class ImmutableValueOption<T> extends AbsNonCollectionOption<T> {
+  public ImmutableValueOption(@NotNull T value, @NotNull OptionContainer container) {
     super(value, container);
   }
 
@@ -17,5 +17,10 @@ public abstract class AbsImmutableValueOption<T> extends AbsNonCollectionOption<
   @Override
   public @NotNull T getRawValue() {
     return value;
+  }
+
+  @Override
+  public Option<T> deepCopy(@NotNull OptionContainer newContainer) {
+    return new ImmutableValueOption<>(value, newContainer);
   }
 }

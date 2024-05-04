@@ -4,12 +4,11 @@ import fr.paulbrancieq.modpackconfigupdater.remake.option.CollectionOptionChildO
 import fr.paulbrancieq.modpackconfigupdater.remake.option.containers.OptionContainer;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.ListOption;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.option.collection.MapOption;
-import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.NullOption;
-import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.StringOption;
+import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.ImmutableValueOption;
+import fr.paulbrancieq.modpackconfigupdater.remake.option.option.noncollection.NullOptionImpl;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.OptionPathPart;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
@@ -76,32 +75,17 @@ public interface Option<ValueT> {
 
   static Option<?> fromSerializableValue(@Nullable Object value, @NotNull OptionContainer container) {
     if (value == null) {
-      return new NullOption(container);
+      return new NullOptionImpl(container);
     }
     OptionFactoryMap factories = new OptionFactoryMap() {{
-      // TODO: Implement the rest of the types
-      put(Boolean.class, (v, c) -> {
-        throw new NotImplementedException("BooleanOption");
-      });
-      put(Integer.class, (v, c) -> {
-        throw new NotImplementedException("IntegerOption");
-      });
-      put(Double.class, (v, c) -> {
-        throw new NotImplementedException("DoubleOption");
-      });
-      put(Float.class, (v, c) -> {
-        throw new NotImplementedException("FloatOption");
-      });
-      put(Long.class, (v, c) -> {
-        throw new NotImplementedException("LongOption");
-      });
-      put(Short.class, (v, c) -> {
-        throw new NotImplementedException("ShortOption");
-      });
-      put(Byte.class, (v, c) -> {
-        throw new NotImplementedException("ByteOption");
-      });
-      put(String.class, StringOption::new);
+      put(Boolean.class, ImmutableValueOption::new);
+      put(Integer.class, ImmutableValueOption::new);
+      put(Double.class, ImmutableValueOption::new);
+      put(Float.class, ImmutableValueOption::new);
+      put(Long.class, ImmutableValueOption::new);
+      put(Short.class, ImmutableValueOption::new);
+      put(Byte.class, ImmutableValueOption::new);
+      put(String.class, ImmutableValueOption::new);
       put(List.class, ListOption::fromSerializable);
       put(Map.class, MapOption::fromSerializable);
     }};

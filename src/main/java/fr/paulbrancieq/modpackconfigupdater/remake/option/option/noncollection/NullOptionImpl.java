@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public record NullOption(OptionContainer container) implements Option<Object> {
-  public NullOption(@NotNull OptionContainer container) {
+public record NullOptionImpl(OptionContainer container) implements Option<Object> {
+  public NullOptionImpl(@NotNull OptionContainer container) {
     this.container = container;
   }
 
@@ -29,7 +29,7 @@ public record NullOption(OptionContainer container) implements Option<Object> {
 
   @Override
   public Option<Object> deepCopy(@NotNull OptionContainer newContainer) {
-    return new NullOption(newContainer);
+    return new NullOptionImpl(newContainer);
   }
 
   @Override
