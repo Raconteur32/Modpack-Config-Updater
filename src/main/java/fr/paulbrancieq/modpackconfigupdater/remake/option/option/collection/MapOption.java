@@ -99,6 +99,7 @@ public class MapOption extends CollectionOption<Map<String, OptionContainer>> {
       value.put(refOption.getContainer().getPathPart().getStringPathPart(),
               new OptionContainerBasicImpl(refOption, this,
                       refOption.getContainer().getPathPart().getStringPathPart()));
+      // TODO: review default depth ? for now it's 1, but it could be 2 or more. It should be flexible
     }
   }
 

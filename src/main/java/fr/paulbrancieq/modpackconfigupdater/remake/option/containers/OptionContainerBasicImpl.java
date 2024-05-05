@@ -1,7 +1,7 @@
 package fr.paulbrancieq.modpackconfigupdater.remake.option.containers;
 
-import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.option.OrphanException;
+import fr.paulbrancieq.modpackconfigupdater.remake.option.option.Option;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.OptionPath;
 import fr.paulbrancieq.modpackconfigupdater.remake.path.pathpart.SimpleOptionPathPart;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ public class OptionContainerBasicImpl implements OptionContainer {
 
   private @Nullable Option<?> parentOption;
 
-  private final @NotNull SimpleOptionPathPart pathPart;
+  protected final @NotNull SimpleOptionPathPart pathPart;
 
   public OptionContainerBasicImpl(@NotNull Option<?> option, @NotNull Option<?> parentOption,
                                   @NotNull String pathPart) {

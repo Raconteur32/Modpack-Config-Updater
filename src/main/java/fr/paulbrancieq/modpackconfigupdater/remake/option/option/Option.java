@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +82,9 @@ public interface Option<ValueT> {
     OptionFactoryMap factories = new OptionFactoryMap() {{
       put(Boolean.class, ImmutableValueOption::new);
       put(Integer.class, ImmutableValueOption::new);
+      put(BigInteger.class, ImmutableValueOption::new);
       put(Double.class, ImmutableValueOption::new);
+      put(BigDecimal.class, ImmutableValueOption::new);
       put(Float.class, ImmutableValueOption::new);
       put(Long.class, ImmutableValueOption::new);
       put(Short.class, ImmutableValueOption::new);
