@@ -7,6 +7,8 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +51,9 @@ public class CustomizedObjectTypeAdapter extends TypeAdapter<Object> {
         //return in.nextDouble();
         String n = in.nextString();
         if (n.indexOf('.') != -1) {
-          return Double.parseDouble(n);
+          return new BigDecimal(n);
         }
-        return Long.parseLong(n);
+        return new BigInteger(n);
 
       case BOOLEAN:
         return in.nextBoolean();

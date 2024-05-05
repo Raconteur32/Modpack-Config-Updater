@@ -12,7 +12,7 @@ import java.util.List;
 public class OptionPath {
   protected final @NotNull List<? extends OptionPathPart> optionPathParts;
 
-  protected OptionPath(@NotNull List<? extends OptionPathPart> optionPathParts) {
+  public OptionPath(@NotNull List<? extends OptionPathPart> optionPathParts) {
     this.optionPathParts = new ArrayList<>(optionPathParts);
   }
 
