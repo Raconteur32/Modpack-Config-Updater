@@ -1,0 +1,44 @@
+plugins {
+    id 'multiloader-common-mod-core'
+}
+
+base {
+    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+}
+
+configurations {
+    commonModCoreJava{
+        canBeResolved = true
+    }
+    commonModCoreResources{
+        canBeResolved = true
+    }
+}
+
+dependencies {
+    compileOnly(project(':common-mod-core'))
+    commonModCoreJava project(path: ':common-mod-core', configuration: 'commonModCoreJava')
+    commonModCoreResources project(path: ':common-mod-core', configuration: 'commonModCoreResources')
+}
+
+tasks.named('compileJava', JavaCompile) {
+    dependsOn(configurations.commonModCoreJava)
+    source(configurations.commonModCoreJava)
+}
+
+processResources {
+    dependsOn(configurations.commonModCoreResources)
+    from(configurations.commonModCoreResources)
+}
+
+tasks.named('javadoc', Javadoc).configure {
+    dependsOn(configurations.commonModCoreJava)
+    source(configurations.commonModCoreJava)
+}
+
+tasks.named('sourcesJar', Jar) {
+    dependsOn(configurations.commonModCoreJava)
+    from(configurations.commonModCoreJava)
+    dependsOn(configurations.commonModCoreResources)
+    from(configurations.commonModCoreResources)
+}

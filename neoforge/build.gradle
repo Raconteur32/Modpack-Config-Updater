@@ -1,14 +1,14 @@
 plugins {
-    id 'multiloader-loader'
+    id 'multiloader-mod-core'
     id 'net.neoforged.moddev'
 }
 
 neoForge {
     version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists
-    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    def at = project(':common-mod-core').file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
+        accessTransformers.from(at.absolutePath)
     }
     parchment {
         minecraftVersion = parchment_minecraft
@@ -23,14 +23,14 @@ neoForge {
             client()
         }
         data {
-            data()
+            clientData()
         }
         server {
             server()
         }
     }
     mods {
-        "${mod_id}" {
+        "${mod_id_core}" {
             sourceSet sourceSets.main
         }
     }

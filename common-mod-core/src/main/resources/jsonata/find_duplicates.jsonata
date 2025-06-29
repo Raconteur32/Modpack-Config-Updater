@@ -1,0 +1,11 @@
+(
+  $paths := $;
+
+  $uniquePaths := $distinct($paths);
+  $duplicates := $filter($uniquePaths, function($path) {
+    $count($filter($paths, function($p) { $p = $path })) > 1
+  });
+
+  $result := $distinct($duplicates);
+  $type($result) = "array" ? $result : [$result]
+)

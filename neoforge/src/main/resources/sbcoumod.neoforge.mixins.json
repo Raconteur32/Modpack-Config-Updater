@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.example.sbcou.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "com.raconteur.sbcou.mixin.MixinTitleScreen"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

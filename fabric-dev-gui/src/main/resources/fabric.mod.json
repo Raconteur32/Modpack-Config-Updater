@@ -1,0 +1,29 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id_dev_gui}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "contact": {
+        "homepage": "https://fabricmc.net/",
+        "sources": "https://github.com/FabricMC/fabric-example-mod"
+    },
+    "license": "${license}",
+    "icon": "${mod_id_dev_gui}.png",
+    "environment": "*",
+    "entrypoints": {
+    },
+    "mixins": [
+        "${mod_id}-common-mod-dev-gui.mixins.json",
+        "${mod_id}-fabric-dev-gui.mixins.json"
+    ],
+    "depends": {
+        "${mod_id_core}": "${version}"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
+}

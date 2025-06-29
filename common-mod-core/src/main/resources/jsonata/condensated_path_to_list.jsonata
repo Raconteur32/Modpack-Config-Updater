@@ -1,0 +1,6 @@
+(
+  $input := $;
+  $trimmed := $substring($input, 3, $length($input) - 4);
+  $unescaped := $unescape($trimmed);
+  $split($unescaped, "\".\"")
+)

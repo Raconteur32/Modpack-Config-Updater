@@ -1,0 +1,20 @@
+(
+  $findKeys := function($obj, $prefix) {(
+    $keys := $keys($obj);
+    $quotedKeys := $map($keys, function($key) {
+      "\"" & $replace($replace($key, "\\", "\\\\"), '"', '\\"') & "\""
+    });
+    $reduce($quotedKeys, function($acc, $key) {(
+      $value := $lookup($obj, $eval($key));
+      $newKey := $prefix & $key;
+      $merge([
+        $acc,
+        {$newKey: $value},
+        $type($value) = "object" ? 
+          $findKeys($value, $newKey & ".") : 
+          {}
+      ])
+    )}, {})
+  )};
+  $findKeys($, "$.")
+)

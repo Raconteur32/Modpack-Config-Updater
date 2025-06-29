@@ -1,0 +1,60 @@
+plugins {
+    id 'multiloader-mod-core'
+    id 'fabric-loom'
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    // jsonata
+    implementation group: 'com.dashjoin', name: 'jsonata', version: '0.9.7'
+    implementation 'org.apache.commons:commons-text:1.12.0'
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    //modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    // includes
+    include(implementation('de.poiu.apron:apron:2.1.1'))
+    include(implementation('io.github.wasabithumb:jtoml:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-api:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-internals:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-serializer-reflect:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-serializer-gson:0.6.2'))
+}
+
+loom {
+    def aw = project(':common-mod-core').file("src/main/resources/${mod_id_core}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
+}
+
+configurations {
+    dev {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    dev jar
+}

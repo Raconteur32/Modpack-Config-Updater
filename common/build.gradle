@@ -1,26 +1,27 @@
 plugins {
-    id 'multiloader-common'
-    id 'net.neoforged.moddev'
-}
-
-neoForge {
-    neoFormVersion = neo_form_version
-    // Automatically enable AccessTransformers if the file exists
-    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
-    }
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
+    id('multiloader-common')
 }
 
 dependencies {
-    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-    // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
-    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
-    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    // jsonata
+    implementation group: 'com.dashjoin', name: 'jsonata', version: '0.9.7'
+
+    // apache commons
+    implementation 'org.apache.commons:commons-text:1.12.0'
+
+    // tests
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    // annotations
+    implementation 'org.jetbrains:annotations:24.0.0'
+    //oshi
+    implementation 'com.github.oshi:oshi-core:6.4.10'
+    //gson
+    implementation 'com.google.code.gson:gson:2.11.0'
+    //toml
+    implementation 'io.github.wasabithumb:jtoml:0.6.2'
+    implementation 'io.github.wasabithumb:jtoml-serializer-reflect:0.6.2'
 }
 
 configurations {
@@ -34,8 +35,11 @@ configurations {
     }
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
     commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }
-

@@ -1,0 +1,36 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id_core}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "contact": {
+        "homepage": "https://fabricmc.net/",
+        "sources": "https://github.com/FabricMC/fabric-example-mod"
+    },
+    "license": "${license}",
+    "icon": "${mod_id_core}.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "fr.raconteur.sbcou.Sbcou"
+        ],
+        "preLaunch": [
+            "fr.raconteur.sbcou.SbcouPreLaunch"
+        ]
+    },
+    "mixins": [
+        "${mod_id}-common-mod.mixins.json",
+        "${mod_id}-fabric-core.mixins.json"
+    ],
+    "depends": {
+        "java": ">=${java_version}"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
+}
+  

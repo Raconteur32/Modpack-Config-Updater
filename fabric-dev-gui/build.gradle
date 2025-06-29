@@ -1,0 +1,88 @@
+plugins {
+    id 'multiloader-common-mod-dev-gui'
+    id 'fabric-loom'
+}
+
+base {
+    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+}
+
+configurations {
+    commonModDevGuiJava{
+        canBeResolved = true
+    }
+    commonModDevGuiResources{
+        canBeResolved = true
+    }
+}
+
+dependencies {
+    api(project(path: ':fabric-core', configuration: 'dev'))
+    compileOnly(project(':common-mod-dev-gui'))
+    commonModDevGuiJava project(path: ':common-mod-dev-gui', configuration: 'commonModDevGuiJava')
+    commonModDevGuiResources project(path: ':common-mod-dev-gui', configuration: 'commonModDevGuiResources')
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    // jsonata
+    //implementation group: 'com.dashjoin', name: 'jsonata', version: '0.9.7'
+    implementation 'org.apache.commons:commons-text:1.12.0'
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    //modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    // includes
+    include(implementation('de.poiu.apron:apron:2.1.1'))
+    include(implementation('io.github.wasabithumb:jtoml:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-api:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-internals:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-serializer-reflect:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml-serializer-gson:0.6.2'))
+}
+
+loom {
+    def aw = project(':common-mod-dev-gui').file("src/main/resources/${mod_id_dev_gui}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
+}
+
+tasks.named('compileJava', JavaCompile) {
+    dependsOn(configurations.commonModDevGuiJava)
+    source(configurations.commonModDevGuiJava)
+}
+
+processResources {
+    dependsOn(configurations.commonModDevGuiResources)
+    from(configurations.commonModDevGuiResources)
+}
+
+tasks.named('javadoc', Javadoc).configure {
+    dependsOn(configurations.commonModDevGuiJava)
+    source(configurations.commonModDevGuiJava)
+}
+
+tasks.named('sourcesJar', Jar) {
+    dependsOn(configurations.commonModDevGuiJava)
+    from(configurations.commonModDevGuiJava)
+    dependsOn(configurations.commonModDevGuiResources)
+    from(configurations.commonModDevGuiResources)
+}
