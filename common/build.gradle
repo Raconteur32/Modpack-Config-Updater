@@ -21,6 +21,13 @@ dependencies {
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+
+    // Sqlite
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.50.2.0'
+
+    // Encoding detection
+    implementation group: 'com.ibm.icu', name: 'icu4j', version: '68.1'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
 }
 
 configurations {

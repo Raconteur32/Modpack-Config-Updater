@@ -10,6 +10,9 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    include(implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.50.2.0')
+    include(implementation group: 'commons-io', name: 'commons-io', version: '2.17.0')
 }
 
 loom {
