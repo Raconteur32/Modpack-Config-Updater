@@ -1,5 +1,6 @@
 package fr.raconteur.sbcou.fileshandlers.types;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class Utils {
@@ -11,6 +12,8 @@ public class Utils {
             obj instanceof StrictlyComparableArrayList ||
             obj instanceof StrictlyComparableMap ||
             obj instanceof Byte[] ||
+            obj instanceof Double && ((Double) obj).isNaN() ||
+            obj instanceof Float && ((Float) obj).isNaN() ||
             obj == null;
   }
 
@@ -30,6 +33,9 @@ public class Utils {
         return java.math.BigInteger.valueOf(l);
       }
       case Double d -> {
+        if (d.isNaN()) {
+          return d;
+        }
         return java.math.BigDecimal.valueOf(d);
       }
       case java.math.BigDecimal bigDecimal -> {

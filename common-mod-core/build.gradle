@@ -22,8 +22,8 @@ dependencies {
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     //toml
-    implementation 'io.github.wasabithumb:jtoml:0.6.2'
-    implementation 'io.github.wasabithumb:jtoml-serializer-reflect:0.6.2'
+    implementation 'io.github.wasabithumb:jtoml:0.6.4'
+    implementation 'io.github.wasabithumb:jtoml-serializer-reflect:0.6.4'
 }
 
 configurations {

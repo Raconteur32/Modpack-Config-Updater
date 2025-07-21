@@ -49,7 +49,7 @@ public class NewVersionScreen extends Screen {
 
   @Override
   public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+    //this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
     super.render(guiGraphics, mouseX, mouseY, partialTick);
 
     guiGraphics.drawString(this.font, "Version ID:", this.versionIdInput.getX() - 70, this.versionIdInput.getY() + 5, 0xFFFFFF);

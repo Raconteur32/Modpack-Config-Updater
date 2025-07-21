@@ -129,10 +129,7 @@ public class OptionsActionsUtils {
     try {
       List<String> rawResults = new Gson().fromJson(Files.readString(Paths.get(Constants.IGNORED_OPTION_PATHS_FILE)),
               new TypeToken<List<String>>() {}.getType());
-      List<String> results = new ArrayList<>();
-      for (String item : rawResults) {
-        results.add((new File(item)).getCanonicalPath());
-      }
+      List<String> results = new ArrayList<>(rawResults);
       return results;
     } catch (IOException e) {
       throw new OptionsActionsUtilsException("Failed to read ignored_option_paths.json", e);

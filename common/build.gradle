@@ -20,8 +20,8 @@ dependencies {
     //gson
     implementation 'com.google.code.gson:gson:2.11.0'
     //toml
-    implementation 'io.github.wasabithumb:jtoml:0.6.2'
-    implementation 'io.github.wasabithumb:jtoml-serializer-reflect:0.6.2'
+    implementation 'io.github.wasabithumb:jtoml:0.6.4'
+    implementation 'io.github.wasabithumb:jtoml-serializer-reflect:0.6.4'
 }
 
 configurations {

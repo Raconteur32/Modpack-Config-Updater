@@ -17,11 +17,11 @@ dependencies {
 
     // includes
     include(implementation('de.poiu.apron:apron:2.1.1'))
-    include(implementation('io.github.wasabithumb:jtoml:0.6.2'))
-    include(implementation('io.github.wasabithumb:jtoml-api:0.6.2'))
-    include(implementation('io.github.wasabithumb:jtoml-internals:0.6.2'))
-    include(implementation('io.github.wasabithumb:jtoml-serializer-reflect:0.6.2'))
-    include(implementation('io.github.wasabithumb:jtoml-serializer-gson:0.6.2'))
+    include(implementation('io.github.wasabithumb:jtoml:0.6.4'))
+    include(implementation('io.github.wasabithumb:jtoml-api:0.6.4'))
+    include(implementation('io.github.wasabithumb:jtoml-internals:0.6.4'))
+    include(implementation('io.github.wasabithumb:jtoml-serializer-reflect:0.6.4'))
+    include(implementation('io.github.wasabithumb:jtoml-serializer-gson:0.6.4'))
 }
 
 loom {
