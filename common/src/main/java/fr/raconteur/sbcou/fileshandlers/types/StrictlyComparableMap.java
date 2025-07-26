@@ -29,7 +29,11 @@ public class StrictlyComparableMap implements Map<String, Object> {
       if (!Utils.isValidType(thisElement) || !Utils.isValidType(otherElement)) {
         throw new RuntimeException("Invalid type in StrictlyComparableArrayList");
       }
-      if (!thisElement.getClass().isArray() && !otherElement.getClass().isArray() && !Objects.equals(thisElement, otherElement)) {
+      if (thisElement == null ^ otherElement == null) {
+        return false;
+      } else if (thisElement == null && otherElement == null) {
+        return true;
+      } else if (!thisElement.getClass().isArray() && !otherElement.getClass().isArray() && !Objects.equals(thisElement, otherElement)) {
         return false;
       } else if (thisElement.getClass().isArray() && otherElement.getClass().isArray() && !Arrays.deepEquals((Object[]) thisElement, (Object[]) otherElement)) {
         return false;
