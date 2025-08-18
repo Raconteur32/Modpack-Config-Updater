@@ -1,6 +1,6 @@
 package fr.raconteur.sbcou;
 
-import fr.raconteur.sbcou.db.SbcouDataBase;
+import fr.raconteur.sbcou.db.versions.SbcouVersionsDataBase;
 import fr.raconteur.sbcou.file.JsonConfigFileHandler;
 import fr.raconteur.sbcou.flatobject.FlatKey;
 import fr.raconteur.sbcou.flatobject.FlatObject;
@@ -39,7 +39,7 @@ public class CommonClass {
             Constants.LOG.info("Hello to examplemod");
         }
         try {
-            SbcouDataBase test = new SbcouDataBase();
+            SbcouVersionsDataBase test = new SbcouVersionsDataBase();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +61,7 @@ public class CommonClass {
 
         Constants.LOG.info(String.valueOf(SbcouData.sbcouDataFromId(1).getValue()));
 
-        FlatKey key = FlatKey.getFlatKeyFromSingleString("test\\\"").getChild(FlatKey.getFlatKeyFromSingleString(""));
+        FlatKey key = FlatKey.getSinglePartFlatKeyFromString("test\\\"").getChild(FlatKey.getSinglePartFlatKeyFromString(""));
 
         Constants.LOG.info(key.getFormattedKey());
 

@@ -1,10 +1,11 @@
 package fr.raconteur.sbcou.types.nested;
 
 import com.google.common.collect.ImmutableMap;
-import fr.raconteur.sbcou.db.DbDataValues;
+import fr.raconteur.sbcou.db.versions.DbDataValues;
 import fr.raconteur.sbcou.flatobject.FlatKey;
 import fr.raconteur.sbcou.flatobject.FlatObject;
 import fr.raconteur.sbcou.types.SbcouData;
+import fr.raconteur.sbcou.types.SbcouDoNotExist;
 import fr.raconteur.sbcou.types.SbcouNested;
 
 import java.util.*;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class SbcouObject extends SbcouNested<Map<String, SbcouData<?>>> {
     
     public SbcouObject(Map<String, SbcouData<?>> value) {
-        super("OBJECT", value);
+        super("OBJECT", value.entrySet().stream().filter(e -> !(e.getValue() instanceof SbcouDoNotExist)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
     
     public SbcouObject() {
@@ -91,13 +92,13 @@ public class SbcouObject extends SbcouNested<Map<String, SbcouData<?>>> {
 
     @Override
     public FlatObject flatten() {
-        FlatObject flatObject = new FlatObject();
+        FlatObject.Builder builder = FlatObject.builder(this);
 
         for (Map.Entry<String, SbcouData<?>> entry : getValue().entrySet()) {
-            FlatKey newFlatKey = FlatKey.getFlatKeyFromSingleString(escapeKey(entry.getKey()));
-            flatObject.putSubFlatObject(newFlatKey, entry.getValue().flatten());
+            FlatKey newFlatKey = FlatKey.getSinglePartFlatKeyFromString(escapeKey(entry.getKey()));
+            builder.putSubFlatObject(newFlatKey, entry.getValue().flatten());
         }
 
-        return flatObject;
+        return builder.build();
     }
 }

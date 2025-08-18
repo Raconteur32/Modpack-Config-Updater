@@ -1,11 +1,10 @@
 package fr.raconteur.sbcou.types;
 
-import fr.raconteur.sbcou.db.DbDataValues;
+import fr.raconteur.sbcou.db.versions.DbDataValues;
 import fr.raconteur.sbcou.flatobject.FlatObject;
 import fr.raconteur.sbcou.types.nested.SbcouList;
 import fr.raconteur.sbcou.types.nested.SbcouObject;
 import fr.raconteur.sbcou.types.primitives.*;
-import oshi.annotation.concurrent.Immutable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,7 +22,6 @@ public abstract class SbcouData<T> {
         else {
             this.dbDataValue = null;
         }
-
     }
 
     public static  SbcouData<?> sbcouDataFromId(Integer id) {
@@ -77,7 +75,15 @@ public abstract class SbcouData<T> {
     public abstract String getDisplayValue();
 
     public boolean equals(SbcouData<?> other) {
-        return this.dbDataValue.getId() == other.dbDataValue.getId();
+        if (other == null) return false;
+        return this.dbDataValue.getId() == other.getDataId();
+    }
+
+    @Override
+    public int hashCode() {
+        // Create hash string with class name prefix and database ID
+        String hashString = this.getClass().getSimpleName() + dbDataValue.getId();
+        return hashString.hashCode();
     }
 
     /**

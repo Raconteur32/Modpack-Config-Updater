@@ -1,9 +1,6 @@
 package fr.raconteur.sbcou.types.primitives;
 
-import fr.raconteur.sbcou.db.DbDataValues;
-import fr.raconteur.sbcou.flatobject.FlatKey;
-import fr.raconteur.sbcou.flatobject.FlatObject;
-import fr.raconteur.sbcou.types.SbcouData;
+import fr.raconteur.sbcou.db.versions.DbDataValues;
 import fr.raconteur.sbcou.types.SbcouPrimitives;
 
 public class SbcouBoolean extends SbcouPrimitives<Boolean> {

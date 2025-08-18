@@ -28,6 +28,14 @@ dependencies {
     // Encoding detection
     implementation group: 'com.ibm.icu', name: 'icu4j', version: '68.1'
     implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
+    
+    // Google Guava for collections
+    implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
+
+    // Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'ch.qos.logback:logback-classic:1.4.14'
 }
 
 configurations {
@@ -44,5 +52,9 @@ configurations {
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
     commonResources sourceSets.main.resources.sourceDirectories.singleFile
+}
+
+test {
+    useJUnitPlatform()
 }
 

@@ -1,6 +1,4 @@
-package fr.raconteur.sbcou.db;
-
-import org.jetbrains.annotations.Nullable;
+package fr.raconteur.sbcou.db.versions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,40 +7,40 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public class DbForcedEncoding {
-    private final String filePath;
-    private final String forcedEncoding;
+public class DbExtensionMimic {
+    private final String fileExtension;
+    private final String targetExtension;
     private boolean validity = true;
 
     /**
-     * Main constructor to create a DbForcedEncoding instance
+     * Main constructor to create a DbExtensionMimic instance
      *
-     * @param filePath       The file path
-     * @param forcedEncoding The forced encoding
+     * @param fileExtension   The file extension (must start with a dot)
+     * @param targetExtension The target extension (must start with a dot)
      */
-    public DbForcedEncoding(String filePath, String forcedEncoding) {
-        this.filePath = filePath;
-        this.forcedEncoding = forcedEncoding;
+    public DbExtensionMimic(String fileExtension, String targetExtension) {
+        this.fileExtension = fileExtension;
+        this.targetExtension = targetExtension;
     }
 
     /**
-     * Getter for file path
+     * Getter for file extension
      *
-     * @return The file path
+     * @return The file extension
      */
-    public String getFilePath() {
+    public String getFileExtension() {
         verifyValidity();
-        return filePath;
+        return fileExtension;
     }
 
     /**
-     * Getter for forced encoding
+     * Getter for target extension
      *
-     * @return The forced encoding
+     * @return The target extension
      */
-    public String getForcedEncoding() {
+    public String getTargetExtension() {
         verifyValidity();
-        return forcedEncoding;
+        return targetExtension;
     }
 
     /**
@@ -51,18 +49,18 @@ public class DbForcedEncoding {
      */
     private void verifyValidity() {
         if (!validity) {
-            throw new RuntimeException("This DbForcedEncoding instance has been deleted from the database");
+            throw new RuntimeException("This DbExtensionMimic instance has been deleted from the database");
         }
     }
 
     /**
-     * Retrieves a data row by its file path
+     * Retrieves a data row by its file extension
      *
-     * @param filePath The file path to retrieve
+     * @param fileExtension The file extension to retrieve
      * @return An Optional containing the row if found, otherwise Optional.empty()
      */
-    public static Optional<DbForcedEncoding> getFromDb(String filePath) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<DbExtensionMimic> getFromDb(String fileExtension) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -71,15 +69,15 @@ public class DbForcedEncoding {
         ResultSet rs = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("SELECT file_path, forced_encoding FROM forced_encoding WHERE file_path = ?");
+            stmt = connection.prepareStatement("SELECT file_extension, target_extension FROM extension_mimic WHERE file_extension = ?");
             
-            stmt.setString(1, filePath);
+            stmt.setString(1, fileExtension);
             rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return Optional.of(new DbForcedEncoding(
-                    rs.getString("file_path"),
-                    rs.getString("forced_encoding")
+                return Optional.of(new DbExtensionMimic(
+                    rs.getString("file_extension"),
+                    rs.getString("target_extension")
                 ));
             }
         } catch (SQLException e) {
@@ -98,12 +96,20 @@ public class DbForcedEncoding {
     /**
      * Creates a new row in the database
      *
-     * @param filePath      The file path
-     * @param forcedEncoding The forced encoding
+     * @param fileExtension   The file extension
+     * @param targetExtension The target extension
      * @return An Optional containing the created row if successful, otherwise Optional.empty()
      */
-    public static Optional<DbForcedEncoding> create(String filePath, String forcedEncoding) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<DbExtensionMimic> create(String fileExtension, String targetExtension) {
+        // Verify that extensions start with a dot
+        if (!fileExtension.startsWith(".")) {
+            throw new IllegalArgumentException("File extension must start with a dot: " + fileExtension);
+        }
+        if (!targetExtension.startsWith(".")) {
+            throw new IllegalArgumentException("Target extension must start with a dot: " + targetExtension);
+        }
+
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -112,14 +118,14 @@ public class DbForcedEncoding {
         try {
             Connection connection = db.getConnection();
             stmt = connection.prepareStatement(
-                "INSERT INTO forced_encoding (file_path, forced_encoding) VALUES (?, ?)");
+                "INSERT INTO extension_mimic (file_extension, target_extension) VALUES (?, ?)");
             
-            stmt.setString(1, filePath);
-            stmt.setString(2, forcedEncoding);
+            stmt.setString(1, fileExtension);
+            stmt.setString(2, targetExtension);
             
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
-                return Optional.of(new DbForcedEncoding(filePath, forcedEncoding));
+                return Optional.of(new DbExtensionMimic(fileExtension, targetExtension));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,7 +147,7 @@ public class DbForcedEncoding {
     public boolean deleteInDb() {
         verifyValidity();
         
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return false;
         }
@@ -149,9 +155,9 @@ public class DbForcedEncoding {
         PreparedStatement stmt = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("DELETE FROM forced_encoding WHERE file_path = ?");
+            stmt = connection.prepareStatement("DELETE FROM extension_mimic WHERE file_extension = ?");
             
-            stmt.setString(1, filePath);
+            stmt.setString(1, fileExtension);
             
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
@@ -171,7 +177,7 @@ public class DbForcedEncoding {
     }
 
     /**
-     * Initializes the forced_encoding table and its indexes
+     * Initializes the extension_mimic table and its indexes
      *
      * @throws SQLException SQL Exception
      */
@@ -181,13 +187,13 @@ public class DbForcedEncoding {
             statement = connection.createStatement();
             
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS forced_encoding("
-                    + "file_path TEXT PRIMARY KEY,"
-                    + "forced_encoding TEXT NOT NULL"
+                "CREATE TABLE IF NOT EXISTS extension_mimic("
+                    + "file_extension TEXT PRIMARY KEY CHECK (file_extension LIKE '.%'),"
+                    + "target_extension TEXT NOT NULL CHECK (target_extension LIKE '.%')"
                     + ");");
             
-            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_encoding_file_path ON forced_encoding(file_path);");
-            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_encoding_forced_encoding ON forced_encoding(forced_encoding);");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_extension_mimic_file_extension ON extension_mimic(file_extension);");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_extension_mimic_target_extension ON extension_mimic(target_extension);");
         } finally {
             if (statement != null) {
                 statement.close();
@@ -196,13 +202,13 @@ public class DbForcedEncoding {
     }
 
     /**
-     * Get the forced encoding for a given file path
+     * Get the target extension of a presumed mimic
      *
-     * @param filePath The file path to look up
-     * @return An Optional containing the forced encoding if found, otherwise Optional.empty()
+     * @param fileExtension The file extension to look up
+     * @return An Optional containing the target extension if found, otherwise Optional.empty()
      */
-    public static Optional<String> getForcedEncoding(String filePath) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<String> getMimicTarget(String fileExtension) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -211,13 +217,13 @@ public class DbForcedEncoding {
         ResultSet rs = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("SELECT forced_encoding FROM forced_encoding WHERE file_path = ?");
+            stmt = connection.prepareStatement("SELECT target_extension FROM extension_mimic WHERE file_extension = ?");
             
-            stmt.setString(1, filePath);
+            stmt.setString(1, fileExtension);
             rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return Optional.of(rs.getString("forced_encoding"));
+                return Optional.of(rs.getString("target_extension"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

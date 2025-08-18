@@ -1,0 +1,4 @@
+# Ignore all test temporary files and directories
+*
+# But keep this .gitignore file
+!.gitignore

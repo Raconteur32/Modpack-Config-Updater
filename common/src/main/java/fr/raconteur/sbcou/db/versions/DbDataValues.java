@@ -1,6 +1,5 @@
-package fr.raconteur.sbcou.db;
+package fr.raconteur.sbcou.db.versions;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,7 +79,7 @@ public class DbDataValues {
      * @return An Optional containing the row if found, otherwise Optional.empty()
      */
     public static Optional<DbDataValues> getFromDb(int id) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -126,7 +125,7 @@ public class DbDataValues {
      * @return An Optional containing the row if found, otherwise Optional.empty()
      */
     private static Optional<DbDataValues> getFromDb(String dataType, byte[] value) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -231,7 +230,7 @@ public class DbDataValues {
      * @return An Optional containing the created row if successful, otherwise Optional.empty()
      */
     private static Optional<DbDataValues> createInDb(String dataType, byte[] value) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }

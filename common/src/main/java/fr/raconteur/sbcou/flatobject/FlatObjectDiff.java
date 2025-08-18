@@ -2,8 +2,7 @@ package fr.raconteur.sbcou.flatobject;
 
 import com.google.common.collect.ImmutableMap;
 import fr.raconteur.sbcou.types.SbcouData;
-import fr.raconteur.sbcou.types.SbcouDeleted;
-
+import fr.raconteur.sbcou.types.SbcouDoNotExist;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,62 +14,33 @@ public class FlatObjectDiff {
     public FlatObjectDiff(FlatObject first, FlatObject second) {
         diffs = new TreeMap<>();
 
+        // Iterate entries from first: detect DELETED, DIFFERENT, TYPE_DIFFERENT
         for (Map.Entry<FlatKey, SbcouData<?>> firstEntry : first.map.entrySet()) {
-            if  (!second.map.containsKey(firstEntry.getKey())) {
-                diffs.put(
-                        firstEntry.getKey(),
-                        new FlatObjectDiffEntry(
-                                firstEntry.getKey(),
-                                FlatObjectEntryDiffType.DELETED,
-                                firstEntry.getValue(),
-                                second.map.get(firstEntry.getKey())
-                        )
-                );
-            } else {
-                if (firstEntry.getValue() == second.map.get(firstEntry.getKey())) {
-                    diffs.put(
-                            firstEntry.getKey(),
-                            new FlatObjectDiffEntry(
-                                    firstEntry.getKey(),
-                                    FlatObjectEntryDiffType.EQUAL,
-                                    firstEntry.getValue(),
-                                    second.map.get(firstEntry.getKey())
-                            )
-                    );
-                } else if (!firstEntry.getValue().getStringType().equals(second.map.get(firstEntry.getKey()).getStringType())) {
-                    diffs.put(
-                            firstEntry.getKey(),
-                            new FlatObjectDiffEntry(
-                                    firstEntry.getKey(),
-                                    FlatObjectEntryDiffType.TYPE_DIFFERENT,
-                                    firstEntry.getValue(),
-                                    second.map.get(firstEntry.getKey())
-                            )
-                    );
-                }  else {
-                    diffs.put(
-                            firstEntry.getKey(),
-                            new FlatObjectDiffEntry(
-                                    firstEntry.getKey(),
-                                    FlatObjectEntryDiffType.DIFFERENT,
-                                    firstEntry.getValue(),
-                                    second.map.get(firstEntry.getKey())
-                            )
-                    );
+            FlatKey key = firstEntry.getKey();
+            SbcouData<?> firstValue = firstEntry.getValue();
+            SbcouData<?> secondValue = second.map.get(key);
+
+            if (secondValue == null) {
+                // present in first, missing in second => DELETED
+                diffs.put(key, new FlatObjectDiffEntry(key, FlatObjectEntryDiffType.DELETED, firstValue, null));
+            } else if (firstValue != secondValue) {
+                // Different instances; check type
+                if (!firstValue.getStringType().equals(secondValue.getStringType())) {
+                    diffs.put(key, new FlatObjectDiffEntry(key, FlatObjectEntryDiffType.TYPE_DIFFERENT, firstValue, secondValue));
+                } else if (!firstValue.equals(secondValue)) {
+                    // Same type but not equal in DB identity
+                    diffs.put(key, new FlatObjectDiffEntry(key, FlatObjectEntryDiffType.DIFFERENT, firstValue, secondValue));
                 }
+                // else equal in DB identity -> no diff
             }
+            // else exact same instance -> no diff
         }
+
+        // Iterate entries from second only: detect NEW
         for (Map.Entry<FlatKey, SbcouData<?>> secondEntry : second.map.entrySet()) {
-            if (!first.map.containsKey(secondEntry.getKey())) {
-                diffs.put(
-                        secondEntry.getKey(),
-                        new FlatObjectDiffEntry(
-                                secondEntry.getKey(),
-                                FlatObjectEntryDiffType.NEW,
-                                new SbcouDeleted(),
-                                secondEntry.getValue()
-                        )
-                );
+            FlatKey key = secondEntry.getKey();
+            if (!first.map.containsKey(key)) {
+                diffs.put(key, new FlatObjectDiffEntry(key, FlatObjectEntryDiffType.NEW, new SbcouDoNotExist(), secondEntry.getValue()));
             }
         }
     }
@@ -80,7 +50,6 @@ public class FlatObjectDiff {
     }
 
     public enum FlatObjectEntryDiffType {
-        EQUAL,
         DIFFERENT,
         TYPE_DIFFERENT,
         NEW,

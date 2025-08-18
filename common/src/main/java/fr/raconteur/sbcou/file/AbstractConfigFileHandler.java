@@ -3,14 +3,13 @@ package fr.raconteur.sbcou.file;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
 import fr.raconteur.sbcou.Constants;
-import fr.raconteur.sbcou.db.DbForcedEncoding;
+import fr.raconteur.sbcou.db.versions.DbForcedEncoding;
 import fr.raconteur.sbcou.types.SbcouData;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.Optional;
 

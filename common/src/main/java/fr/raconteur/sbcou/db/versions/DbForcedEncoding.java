@@ -1,6 +1,4 @@
-package fr.raconteur.sbcou.db;
-
-import org.jetbrains.annotations.Nullable;
+package fr.raconteur.sbcou.db.versions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,20 +7,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public class DbForcedExtension {
+public class DbForcedEncoding {
     private final String filePath;
-    private final String forcedExtension;
+    private final String forcedEncoding;
     private boolean validity = true;
 
     /**
-     * Main constructor to create a DbForcedExtension instance
+     * Main constructor to create a DbForcedEncoding instance
      *
-     * @param filePath         The file path
-     * @param forcedExtension  The forced extension
+     * @param filePath       The file path
+     * @param forcedEncoding The forced encoding
      */
-    public DbForcedExtension(String filePath, String forcedExtension) {
+    public DbForcedEncoding(String filePath, String forcedEncoding) {
         this.filePath = filePath;
-        this.forcedExtension = forcedExtension;
+        this.forcedEncoding = forcedEncoding;
     }
 
     /**
@@ -36,13 +34,13 @@ public class DbForcedExtension {
     }
 
     /**
-     * Getter for forced extension
+     * Getter for forced encoding
      *
-     * @return The forced extension
+     * @return The forced encoding
      */
-    public String getForcedExtension() {
+    public String getForcedEncoding() {
         verifyValidity();
-        return forcedExtension;
+        return forcedEncoding;
     }
 
     /**
@@ -51,7 +49,7 @@ public class DbForcedExtension {
      */
     private void verifyValidity() {
         if (!validity) {
-            throw new RuntimeException("This DbForcedExtension instance has been deleted from the database");
+            throw new RuntimeException("This DbForcedEncoding instance has been deleted from the database");
         }
     }
 
@@ -61,8 +59,8 @@ public class DbForcedExtension {
      * @param filePath The file path to retrieve
      * @return An Optional containing the row if found, otherwise Optional.empty()
      */
-    public static Optional<DbForcedExtension> getFromDb(String filePath) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<DbForcedEncoding> getFromDb(String filePath) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -71,15 +69,15 @@ public class DbForcedExtension {
         ResultSet rs = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("SELECT file_path, forced_extension FROM forced_extension WHERE file_path = ?");
+            stmt = connection.prepareStatement("SELECT file_path, forced_encoding FROM forced_encoding WHERE file_path = ?");
             
             stmt.setString(1, filePath);
             rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return Optional.of(new DbForcedExtension(
+                return Optional.of(new DbForcedEncoding(
                     rs.getString("file_path"),
-                    rs.getString("forced_extension")
+                    rs.getString("forced_encoding")
                 ));
             }
         } catch (SQLException e) {
@@ -98,12 +96,12 @@ public class DbForcedExtension {
     /**
      * Creates a new row in the database
      *
-     * @param filePath        The file path
-     * @param forcedExtension The forced extension
+     * @param filePath      The file path
+     * @param forcedEncoding The forced encoding
      * @return An Optional containing the created row if successful, otherwise Optional.empty()
      */
-    public static Optional<DbForcedExtension> create(String filePath, String forcedExtension) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<DbForcedEncoding> create(String filePath, String forcedEncoding) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -112,14 +110,14 @@ public class DbForcedExtension {
         try {
             Connection connection = db.getConnection();
             stmt = connection.prepareStatement(
-                "INSERT INTO forced_extension (file_path, forced_extension) VALUES (?, ?)");
+                "INSERT INTO forced_encoding (file_path, forced_encoding) VALUES (?, ?)");
             
             stmt.setString(1, filePath);
-            stmt.setString(2, forcedExtension);
+            stmt.setString(2, forcedEncoding);
             
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
-                return Optional.of(new DbForcedExtension(filePath, forcedExtension));
+                return Optional.of(new DbForcedEncoding(filePath, forcedEncoding));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,7 +139,7 @@ public class DbForcedExtension {
     public boolean deleteInDb() {
         verifyValidity();
         
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return false;
         }
@@ -149,7 +147,7 @@ public class DbForcedExtension {
         PreparedStatement stmt = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("DELETE FROM forced_extension WHERE file_path = ?");
+            stmt = connection.prepareStatement("DELETE FROM forced_encoding WHERE file_path = ?");
             
             stmt.setString(1, filePath);
             
@@ -171,7 +169,7 @@ public class DbForcedExtension {
     }
 
     /**
-     * Initializes the forced_extension table and its indexes
+     * Initializes the forced_encoding table and its indexes
      *
      * @throws SQLException SQL Exception
      */
@@ -181,13 +179,13 @@ public class DbForcedExtension {
             statement = connection.createStatement();
             
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS forced_extension("
+                "CREATE TABLE IF NOT EXISTS forced_encoding("
                     + "file_path TEXT PRIMARY KEY,"
-                    + "forced_extension TEXT NOT NULL"
+                    + "forced_encoding TEXT NOT NULL"
                     + ");");
             
-            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_extension_file_path ON forced_extension(file_path);");
-            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_extension_forced_extension ON forced_extension(forced_extension);");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_encoding_file_path ON forced_encoding(file_path);");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_encoding_forced_encoding ON forced_encoding(forced_encoding);");
         } finally {
             if (statement != null) {
                 statement.close();
@@ -196,13 +194,13 @@ public class DbForcedExtension {
     }
 
     /**
-     * Get the forced extension for a given file path
+     * Get the forced encoding for a given file path
      *
      * @param filePath The file path to look up
-     * @return An Optional containing the forced extension if found, otherwise Optional.empty()
+     * @return An Optional containing the forced encoding if found, otherwise Optional.empty()
      */
-    public static Optional<String> getForcedExtension(String filePath) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<String> getForcedEncoding(String filePath) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -211,13 +209,13 @@ public class DbForcedExtension {
         ResultSet rs = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("SELECT forced_extension FROM forced_extension WHERE file_path = ?");
+            stmt = connection.prepareStatement("SELECT forced_encoding FROM forced_encoding WHERE file_path = ?");
             
             stmt.setString(1, filePath);
             rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return Optional.of(rs.getString("forced_extension"));
+                return Optional.of(rs.getString("forced_encoding"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

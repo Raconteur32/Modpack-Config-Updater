@@ -9,11 +9,8 @@ public abstract class SbcouPrimitives<T> extends SbcouData<T> {
     }
 
     public FlatObject flatten() {
-        FlatObject flatObject = new FlatObject();
-
-        flatObject.put(FlatKey.ROOT, this);
-
-        return flatObject;
+        return FlatObject.builder(this)
+                .build();
     }
 
     public String getDisplayValue() {

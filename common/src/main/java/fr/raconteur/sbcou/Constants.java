@@ -15,6 +15,7 @@ public class Constants {
 	public static final String MOD_NAME = "Sbcou";
 	public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
 	public static final String MINECRAFT_DIR_SBCOU_DB_RELATIVE_PATH = "config/sbcou.db";
+	public static final String MINECRAFT_DIR_SBCOU_DEV__DB_RELATIVE_PATH = "config/sbcou_dev.db";
 	public static final List<String> SBCOU_DATA_TYPES = List.of(
 			"INTEGER",
 			"REAL",

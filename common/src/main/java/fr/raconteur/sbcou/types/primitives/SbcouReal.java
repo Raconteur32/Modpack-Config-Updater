@@ -1,6 +1,6 @@
 package fr.raconteur.sbcou.types.primitives;
 
-import fr.raconteur.sbcou.db.DbDataValues;
+import fr.raconteur.sbcou.db.versions.DbDataValues;
 import fr.raconteur.sbcou.types.SbcouPrimitives;
 
 import java.math.BigDecimal;

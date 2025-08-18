@@ -1,11 +1,10 @@
 package fr.raconteur.sbcou.file;
 
-import fr.raconteur.sbcou.db.DbExtensionMimic;
-import fr.raconteur.sbcou.db.DbForcedExtension;
+import fr.raconteur.sbcou.db.versions.DbExtensionMimic;
+import fr.raconteur.sbcou.db.versions.DbForcedExtension;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;

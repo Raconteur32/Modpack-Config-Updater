@@ -1,6 +1,4 @@
-package fr.raconteur.sbcou.db;
-
-import org.jetbrains.annotations.Nullable;
+package fr.raconteur.sbcou.db.versions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,40 +7,40 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public class DbExtensionMimic {
-    private final String fileExtension;
-    private final String targetExtension;
+public class DbForcedExtension {
+    private final String filePath;
+    private final String forcedExtension;
     private boolean validity = true;
 
     /**
-     * Main constructor to create a DbExtensionMimic instance
+     * Main constructor to create a DbForcedExtension instance
      *
-     * @param fileExtension   The file extension (must start with a dot)
-     * @param targetExtension The target extension (must start with a dot)
+     * @param filePath         The file path
+     * @param forcedExtension  The forced extension
      */
-    public DbExtensionMimic(String fileExtension, String targetExtension) {
-        this.fileExtension = fileExtension;
-        this.targetExtension = targetExtension;
+    public DbForcedExtension(String filePath, String forcedExtension) {
+        this.filePath = filePath;
+        this.forcedExtension = forcedExtension;
     }
 
     /**
-     * Getter for file extension
+     * Getter for file path
      *
-     * @return The file extension
+     * @return The file path
      */
-    public String getFileExtension() {
+    public String getFilePath() {
         verifyValidity();
-        return fileExtension;
+        return filePath;
     }
 
     /**
-     * Getter for target extension
+     * Getter for forced extension
      *
-     * @return The target extension
+     * @return The forced extension
      */
-    public String getTargetExtension() {
+    public String getForcedExtension() {
         verifyValidity();
-        return targetExtension;
+        return forcedExtension;
     }
 
     /**
@@ -51,18 +49,18 @@ public class DbExtensionMimic {
      */
     private void verifyValidity() {
         if (!validity) {
-            throw new RuntimeException("This DbExtensionMimic instance has been deleted from the database");
+            throw new RuntimeException("This DbForcedExtension instance has been deleted from the database");
         }
     }
 
     /**
-     * Retrieves a data row by its file extension
+     * Retrieves a data row by its file path
      *
-     * @param fileExtension The file extension to retrieve
+     * @param filePath The file path to retrieve
      * @return An Optional containing the row if found, otherwise Optional.empty()
      */
-    public static Optional<DbExtensionMimic> getFromDb(String fileExtension) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<DbForcedExtension> getFromDb(String filePath) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -71,15 +69,15 @@ public class DbExtensionMimic {
         ResultSet rs = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("SELECT file_extension, target_extension FROM extension_mimic WHERE file_extension = ?");
+            stmt = connection.prepareStatement("SELECT file_path, forced_extension FROM forced_extension WHERE file_path = ?");
             
-            stmt.setString(1, fileExtension);
+            stmt.setString(1, filePath);
             rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return Optional.of(new DbExtensionMimic(
-                    rs.getString("file_extension"),
-                    rs.getString("target_extension")
+                return Optional.of(new DbForcedExtension(
+                    rs.getString("file_path"),
+                    rs.getString("forced_extension")
                 ));
             }
         } catch (SQLException e) {
@@ -98,20 +96,12 @@ public class DbExtensionMimic {
     /**
      * Creates a new row in the database
      *
-     * @param fileExtension   The file extension
-     * @param targetExtension The target extension
+     * @param filePath        The file path
+     * @param forcedExtension The forced extension
      * @return An Optional containing the created row if successful, otherwise Optional.empty()
      */
-    public static Optional<DbExtensionMimic> create(String fileExtension, String targetExtension) {
-        // Verify that extensions start with a dot
-        if (!fileExtension.startsWith(".")) {
-            throw new IllegalArgumentException("File extension must start with a dot: " + fileExtension);
-        }
-        if (!targetExtension.startsWith(".")) {
-            throw new IllegalArgumentException("Target extension must start with a dot: " + targetExtension);
-        }
-
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<DbForcedExtension> create(String filePath, String forcedExtension) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -120,14 +110,14 @@ public class DbExtensionMimic {
         try {
             Connection connection = db.getConnection();
             stmt = connection.prepareStatement(
-                "INSERT INTO extension_mimic (file_extension, target_extension) VALUES (?, ?)");
+                "INSERT INTO forced_extension (file_path, forced_extension) VALUES (?, ?)");
             
-            stmt.setString(1, fileExtension);
-            stmt.setString(2, targetExtension);
+            stmt.setString(1, filePath);
+            stmt.setString(2, forcedExtension);
             
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
-                return Optional.of(new DbExtensionMimic(fileExtension, targetExtension));
+                return Optional.of(new DbForcedExtension(filePath, forcedExtension));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -149,7 +139,7 @@ public class DbExtensionMimic {
     public boolean deleteInDb() {
         verifyValidity();
         
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return false;
         }
@@ -157,9 +147,9 @@ public class DbExtensionMimic {
         PreparedStatement stmt = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("DELETE FROM extension_mimic WHERE file_extension = ?");
+            stmt = connection.prepareStatement("DELETE FROM forced_extension WHERE file_path = ?");
             
-            stmt.setString(1, fileExtension);
+            stmt.setString(1, filePath);
             
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
@@ -179,7 +169,7 @@ public class DbExtensionMimic {
     }
 
     /**
-     * Initializes the extension_mimic table and its indexes
+     * Initializes the forced_extension table and its indexes
      *
      * @throws SQLException SQL Exception
      */
@@ -189,13 +179,13 @@ public class DbExtensionMimic {
             statement = connection.createStatement();
             
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS extension_mimic("
-                    + "file_extension TEXT PRIMARY KEY CHECK (file_extension LIKE '.%'),"
-                    + "target_extension TEXT NOT NULL CHECK (target_extension LIKE '.%')"
+                "CREATE TABLE IF NOT EXISTS forced_extension("
+                    + "file_path TEXT PRIMARY KEY,"
+                    + "forced_extension TEXT NOT NULL"
                     + ");");
             
-            statement.execute("CREATE INDEX IF NOT EXISTS idx_extension_mimic_file_extension ON extension_mimic(file_extension);");
-            statement.execute("CREATE INDEX IF NOT EXISTS idx_extension_mimic_target_extension ON extension_mimic(target_extension);");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_extension_file_path ON forced_extension(file_path);");
+            statement.execute("CREATE INDEX IF NOT EXISTS idx_forced_extension_forced_extension ON forced_extension(forced_extension);");
         } finally {
             if (statement != null) {
                 statement.close();
@@ -204,13 +194,13 @@ public class DbExtensionMimic {
     }
 
     /**
-     * Get the target extension of a presumed mimic
+     * Get the forced extension for a given file path
      *
-     * @param fileExtension The file extension to look up
-     * @return An Optional containing the target extension if found, otherwise Optional.empty()
+     * @param filePath The file path to look up
+     * @return An Optional containing the forced extension if found, otherwise Optional.empty()
      */
-    public static Optional<String> getMimicTarget(String fileExtension) {
-        SbcouDataBase db = SbcouDataBase.getLatestInstance();
+    public static Optional<String> getForcedExtension(String filePath) {
+        SbcouVersionsDataBase db = SbcouVersionsDataBase.getLatestInstance();
         if (db == null) {
             return Optional.empty();
         }
@@ -219,13 +209,13 @@ public class DbExtensionMimic {
         ResultSet rs = null;
         try {
             Connection connection = db.getConnection();
-            stmt = connection.prepareStatement("SELECT target_extension FROM extension_mimic WHERE file_extension = ?");
+            stmt = connection.prepareStatement("SELECT forced_extension FROM forced_extension WHERE file_path = ?");
             
-            stmt.setString(1, fileExtension);
+            stmt.setString(1, filePath);
             rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return Optional.of(rs.getString("target_extension"));
+                return Optional.of(rs.getString("forced_extension"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

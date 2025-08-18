@@ -17,7 +17,7 @@ public class FlatKey implements Comparable<FlatKey> {
     private @NotNull final String formattedKey;
     private @NotNull final List<String> rawParts;
     private @NotNull final List<String> parts;
-    private @Nullable final FlatKey parent;
+    private @Nullable final FlatKey directParent;
     private @NotNull final List<FlatKey> allParents;
 
     private FlatKey(@NotNull String formattedKey) {
@@ -27,7 +27,7 @@ public class FlatKey implements Comparable<FlatKey> {
         this.formattedKey = formattedKey;
         this.rawParts = rawSplitKey();
         this.parts = splitKey();
-        this.parent = getInitDirectParent();
+        this.directParent = getInitDirectParent();
         this.allParents = getInitAllParents();
         keyCache.put(formattedKey, this);
     }
@@ -47,8 +47,8 @@ public class FlatKey implements Comparable<FlatKey> {
     }
 
     @Nullable
-    public FlatKey getParent() {
-        return parent;
+    public FlatKey getDirectParent() {
+        return directParent;
     }
 
     @NotNull
@@ -110,9 +110,9 @@ public class FlatKey implements Comparable<FlatKey> {
     @NotNull
     private List<FlatKey> getInitAllParents() {
         List<FlatKey> parents = new ArrayList<>();
-        if (parent != null) {
-            parents.add(parent);
-            parents.addAll(parent.allParents);
+        if (directParent != null) {
+            parents.add(directParent);
+            parents.addAll(directParent.allParents);
         }
         return ImmutableList.copyOf(parents);
     }
@@ -128,7 +128,7 @@ public class FlatKey implements Comparable<FlatKey> {
         }
     }
 
-    public static FlatKey getFlatKeyFromSingleString(String keyPart) {
+    public static FlatKey getSinglePartFlatKeyFromString(String keyPart) {
         String rawPartKey = quotePartToRawPart(keyPart);
         if (keyCache.containsKey(rawPartKey)) {
             return keyCache.get(rawPartKey);
@@ -151,8 +151,17 @@ public class FlatKey implements Comparable<FlatKey> {
         return getFlatKeyFromFormattedKey(String.join(".", newRawPartsList));
     }
 
+    public FlatKey getWithoutFirstPart() {
+        if (isEmpty() || rawParts.size() <= 1) {
+            throw new RuntimeException("Cannot drop first part from ROOT or single-part FlatKey");
+        }
+        return getFlatKeyFromFormattedKey(String.join(".", rawParts.subList(1, rawParts.size())));
+    }
+
     @Override
     public int compareTo(@NotNull FlatKey o) {
-        return Integer.compare(formattedKey.length(), o.formattedKey.length());
+        int lenCmp = Integer.compare(this.formattedKey.length(), o.formattedKey.length());
+        if (lenCmp != 0) return lenCmp;
+        return this.formattedKey.compareTo(o.formattedKey);
     }
 }

@@ -1,10 +1,10 @@
 package fr.raconteur.sbcou.types.nested;
 
 import com.google.common.collect.ImmutableList;
-import fr.raconteur.sbcou.db.DbDataValues;
-import fr.raconteur.sbcou.flatobject.FlatKey;
+import fr.raconteur.sbcou.db.versions.DbDataValues;
 import fr.raconteur.sbcou.flatobject.FlatObject;
 import fr.raconteur.sbcou.types.SbcouData;
+import fr.raconteur.sbcou.types.SbcouDoNotExist;
 import fr.raconteur.sbcou.types.SbcouNested;
 
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class SbcouList extends SbcouNested<List<SbcouData<?>>> {
     
     public SbcouList(List<SbcouData<?>> value) {
-        super("LIST", new ArrayList<>(value));
+        super("LIST", value.stream().filter(v -> !(v instanceof SbcouDoNotExist)).collect(Collectors.toCollection(ArrayList::new)));
     }
     
     public SbcouList(SbcouData<?>... values) {
-        super("LIST", new ArrayList<>(List.of(values)));
+        super("LIST", Arrays.stream(values).filter(v -> !(v instanceof SbcouDoNotExist)).collect(Collectors.toCollection(ArrayList::new)));
     }
 
     public static SbcouList fromDbStringValue(String dbSerializedValue) {
@@ -60,10 +60,7 @@ public class SbcouList extends SbcouNested<List<SbcouData<?>>> {
 
     @Override
     public FlatObject flatten() {
-        FlatObject flatObject = new FlatObject();
-
-        flatObject.put(FlatKey.ROOT, this);
-
-        return flatObject;
+        return FlatObject.builder(this)
+                .build();
     }
 }

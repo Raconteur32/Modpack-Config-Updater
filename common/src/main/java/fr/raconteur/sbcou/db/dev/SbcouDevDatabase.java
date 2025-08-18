@@ -1,5 +1,9 @@
-package fr.raconteur.sbcou.db;
+package fr.raconteur.sbcou.db.dev;
 
+import fr.raconteur.sbcou.db.versions.DbDataValues;
+import fr.raconteur.sbcou.db.versions.DbExtensionMimic;
+import fr.raconteur.sbcou.db.versions.DbForcedEncoding;
+import fr.raconteur.sbcou.db.versions.DbForcedExtension;
 import fr.raconteur.sbcou.platform.Services;
 
 import java.io.File;
@@ -10,15 +14,15 @@ import java.sql.SQLException;
 
 import static fr.raconteur.sbcou.Constants.MINECRAFT_DIR_SBCOU_DB_RELATIVE_PATH;
 
-public class SbcouDataBase {
+public class SbcouDevDatabase {
     private Connection connection;
     private static final Path DB_PATH = Path.of(Services.PLATFORM.getMinecraftInstanceDirectory(), MINECRAFT_DIR_SBCOU_DB_RELATIVE_PATH);
-    private static SbcouDataBase latestInstance;
+    private static SbcouDevDatabase latestInstance;
 
     /**
      * Create a database object and initialize it
      */
-    public SbcouDataBase() throws SQLException {
+    public SbcouDevDatabase() throws SQLException {
         connect();
         init();
         latestInstance = this;
@@ -61,7 +65,7 @@ public class SbcouDataBase {
      *
      * @return The latest instance, or null if none exists
      */
-    public static SbcouDataBase getLatestInstance() {
+    public static SbcouDevDatabase getLatestInstance() {
         return latestInstance;
     }
 }
